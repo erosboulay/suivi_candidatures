@@ -2,6 +2,21 @@
 
 {% block content %}
 
-Template
+<h1> Template </h1>
+
+{% for candidature in candidatures %}
+    <tr>
+        <td> {{ candidature.id }} </td>
+        <td> {{ candidature.entreprise }} </td>
+    </tr>
+{% endfor %}
+
+<form>
+    <div id = "search-bar-container">
+        <span id = "search-icon" class="material-symbols-outlined">search</span>
+        <input id = "search-input" type="search" placeholder = "Search">
+    </div>
+</form>
+
 
 {% endblock %}
