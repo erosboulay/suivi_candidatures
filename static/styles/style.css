@@ -4,11 +4,12 @@ body{
     align-items: flex-start;
 }
 
+/* Custom search bar*/
 #search-bar-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 200px;
+    margin-top: 8em;
     margin-left: auto;
     margin-right: auto;
     width: max-content;
@@ -29,10 +30,6 @@ body{
     width: 300px;
 }
 
-#search-icon {
-    color: #888;
-}
-
 #search-input::placeholder {
     color: rgba(0, 0, 0, 0.25);
 }
@@ -44,4 +41,8 @@ body{
 [type="search"]::-webkit-search-cancel-button{
   -webkit-appearance: none;
   appearance: none;
+}
+
+#search-icon {
+    color: #888;
 }

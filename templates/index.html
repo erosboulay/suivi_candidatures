@@ -2,7 +2,17 @@
 
 {% block content %}
 
-<h1> Template </h1>
+<form>
+    <div id = "search-bar-container">
+        <span id = "search-icon" class="material-symbols-outlined">search</span>
+        <input id = "search-input" type="search" placeholder = "Search">
+    </div>
+</form>
+
+<div id = "database-holder">
+
+</div>
+
 
 {% for candidature in candidatures %}
     <tr>
@@ -11,12 +21,6 @@
     </tr>
 {% endfor %}
 
-<form>
-    <div id = "search-bar-container">
-        <span id = "search-icon" class="material-symbols-outlined">search</span>
-        <input id = "search-input" type="search" placeholder = "Search">
-    </div>
-</form>
 
 
 {% endblock %}

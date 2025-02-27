@@ -13,7 +13,16 @@ db = SQLAlchemy(app)
 class Candidature(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     entreprise = db.Column(db.String(100))
+    ville = db.Column(db.String(100))
+    pays = db.Column(db.String(100))
+    poste = db.Column(db.String(100))    
+    lien_candidature = db.Column(db.String(255))
+    source = db.Column(db.String(100))
+    date_demande = db.Column(db.Date)
+    statut = db.Column(db.String(25))
+    candidature_spontanee = db.Column(db.Boolean)
 
+    # TODO: finir de coder la représentation textuelle
     def __repr__(self):
         return f'<Entreprise {self.entreprise}>'
     
