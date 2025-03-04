@@ -78,11 +78,12 @@ tr{
     border-spacing: 0 1em;
 }
 
-.item-shower{
+.item-container{
     background-color: #FFF;
     margin-bottom: 0.75em;
     width: 100%;    
     border-radius: 10px;
+    position: relative;
     
 }
 
@@ -101,14 +102,14 @@ tr{
 }
 
 .icon{
+    position: absolute;
+    top: 0;
+    right: 0;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0.5em;
-    text-align: center;
     border-radius: 50%;
     height: 2em;
     width: 2em;
+    margin: 5px;
 }
 
 .icon-text{

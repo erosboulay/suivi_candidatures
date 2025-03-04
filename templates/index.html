@@ -5,24 +5,20 @@
 <ul class="database-shower">
 {% for candidature in candidatures %}
     <li >
-        <table class="item-shower">
-            <tr>
-                <td class="col1 titre-poste">{{ candidature.poste }} </td>
-                <td class = "col2" rowspan="2"> <div class = "icon  
+        <div class="item-container">
+            {{ candidature.poste }} <br>
+            {{candidature.statut}} <br>
+            {{ candidature.entreprise }} <br> 
+            {{candidature.ville}}, {{candidature.pays}} <br>
+            
+            <div class = "icon  
                     {% if candidature.statut == 'EN ATTENTE'%} grey 
                     {% elif candidature.statut == 'ENTRETIEN'%} yellow
                     {% elif candidature.statut == 'REFUSE'%} red
                     {% elif candidature.statut == 'ACCEPTE'%} green
                     {% endif %}
-                    "
-                    ></div> <div class = "icon-text"> {{candidature.statut}} </div></td>
+                    "></div> <div class = "icon-text"> </div></td>
             </tr>
-            <tr>
-                <td class="col1" rowspan="2"> {{ candidature.entreprise }} <br> {{candidature.ville}}, {{candidature.pays}}</td>            </tr>
-            <tr>
-                <td class="col2">postulé le</td>
-            </tr>
-        </table>
     </li>
 {% endfor %}
 </ul>
