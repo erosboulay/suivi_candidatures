@@ -65,40 +65,17 @@ body{
     margin-left: auto;
     margin-right: auto;
     background: #AAA;
-    padding: 14px;
     min-width: 360px;
 }
 
-table, td{
-    border: 1px solid;
-    min-width: none;    
-}
-
-tr{
-    border-spacing: 0 1em;
-}
-
 .item-container{
-    background-color: #FFF;
+    background-color: #999;
     margin-bottom: 0.75em;
-    width: 100%;    
+    width: 400px;    
     border-radius: 10px;
     position: relative;
+    padding: 5px;
     
-}
-
-.col1 {
-    width: 70%;
-}
-
-.col2 {
-    padding: 0.5em;
-}
-
-.titre-poste{
-    font-size: 18px;
-    font-weight: bold;
-
 }
 
 .icon{
@@ -110,10 +87,6 @@ tr{
     height: 2em;
     width: 2em;
     margin: 5px;
-}
-
-.icon-text{
-    text-align: center;
 }
 
 .grey {
@@ -134,4 +107,5 @@ tr{
 
 ul {
     list-style-type: none;
+    padding: 0;
 }
