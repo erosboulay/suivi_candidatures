@@ -1,4 +1,5 @@
 database.db
 populating.py
+depopulating.py
 __pycache__
 fill_database.csv

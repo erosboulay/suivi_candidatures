@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
- }
+    font-size: 14px;;
+}
  
 
 body{
@@ -14,7 +15,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FFF;
+    background-color: transparent;
     margin-top: 8em;
     margin-left: auto;
     margin-right: auto;
@@ -53,18 +54,82 @@ body{
 #search-icon {
     color: #888;
     margin-left: 14px;
+    z-index: -1;
+    user-select: none;
 }
 
 /* to show database */
 .database-shower{
     width: 60vw;
-    margin-top: 2em;
+    margin-top: 3em;
     margin-left: auto;
     margin-right: auto;
     background: #AAA;
     padding: 14px;
+    min-width: 360px;
 }
 
+table, td{
+    border: 1px solid;
+    min-width: none;    
+}
+
+tr{
+    border-spacing: 0 1em;
+}
+
+.item-shower{
+    background-color: #FFF;
+    margin-bottom: 0.75em;
+    width: 100%;    
+    border-radius: 10px;
+    
+}
+
+.col1 {
+    width: 70%;
+}
+
+.col2 {
+    padding: 0.5em;
+}
+
+.titre-poste{
+    font-size: 18px;
+    font-weight: bold;
+
+}
+
+.icon{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.5em;
+    text-align: center;
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+}
+
+.icon-text{
+    text-align: center;
+}
+
+.grey {
+    background-color:grey;
+}
+
+.red{
+    background-color: red;
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.green{
+    background-color: green;
+}
 
 ul {
     list-style-type: none;
