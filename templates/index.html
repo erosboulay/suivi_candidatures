@@ -2,27 +2,76 @@
 
 {% block content %}
 
-<ul class="database-shower">
-{% for candidature in candidatures %}
-    <li >
-        <div class="item-container">
-            {{ candidature.poste }} <br>
-            {{candidature.statut}} <br>
-            {{ candidature.entreprise }} <br> 
-            {{candidature.ville}}, {{candidature.pays}} <br>
+<div id = "search-bar">
+    <span id = "search-icon" class="material-symbols-outlined">search</span>
+    <input  id = "search-input" type="search" placeholder = "Search">   
+    <span id = "add-icon" class="material-symbols-outlined">add</span>     
+</div>
+
+<div id = "filter-box">
+    <div class = "filter">Statut<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter">Lieu<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter">Entreprise<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter">Candidature spontanée</div>
+    <div class = "filter">Source<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter">Date<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter">Dernière MàJ<span class="material-symbols-outlined">arrow_drop_down</span></div>
+</div>
+
+<div id = "main-box">
+    <div id = "left-box">
+        <div id = "sort-select"> 
+            Trier par: <span class = "semibold">date de création</span> - <span class = "custom-pink">date de mise à jour</span><br/>
+            Dans l'ordre: <span class = "semibold">croissant</span> - <span class = "custom-pink">décroissant</span>
+        </div>
+        <div id = "query-shower">
+            <div id = "nb-res" class="semibold">666 résultats</div>
+
+            {% for candidature in candidatures %}
+            <div class = "item-box">
+                <div class = "item-box-title">
+                    <span class = "nom-poste"> {{ candidature.poste }} </span><br/>
+                </div>
+                
+                {{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}
+                <div class = "status-icon status-green">{{candidature.statut}}</div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    <div id = "right-box">
+        <div id = "item-header">
+            <div id = "item-header-subcontainer">
+                <span id = "nom-poste-emphasis">Nom du poste</span><br/>
+                Entreprise | Ville - Pays
+                <div class = "status-icon status-green">Accepté</div>
+            </div>
             
-            <div class = "icon  
-                    {% if candidature.statut == 'EN ATTENTE'%} grey 
-                    {% elif candidature.statut == 'ENTRETIEN'%} yellow
-                    {% elif candidature.statut == 'REFUSE'%} red
-                    {% elif candidature.statut == 'ACCEPTE'%} green
-                    {% endif %}
-                    "></div> <div class = "icon-text"> </div></td>
-            </tr>
-    </li>
-{% endfor %}
-</ul>
+            <div id = "crud-operations">
+                <div>[UPDATE]</div>
+                <div>[EDIT]</div>
+                <div>[DELETE]</div>
+            </div>
+        </div>
+        <div id = "item-content">
+            Postulé le 01/11/1111 <br><br>
+            
+            Réponses de l’entreprise:
+            <ul>
+                <li>&bull; 01/12/1111: Propose contrat </li>
+            </ul>
 
+            <br>
 
+            Entretiens:
+            <ul>
+                <li>&bull; 24/11/1111: Entretien technique </li>
+            </ul>
+
+        </div>
+
+    </div>
+</div>
 
 {% endblock %}

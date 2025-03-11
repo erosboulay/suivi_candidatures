@@ -1,48 +1,68 @@
-* {
-    box-sizing: border-box;
-    font-size: 14px;;
+:root{
+    --smol-gap: 5px;
+    --med-gap: 10px;
+    --big-gap: 20px;
+    --bigger-gap: 40px;
+    --biggest-gap: 60px;
+
+    --white: #fff;
+    --lightest-pink: #FFCAD4;
+    --light-pink: #FFABBC;
+    --pink: #F77891;
 }
- 
+
+* {
+    margin: 0px;
+    padding: 0;
+    font-family: "Outfit", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    box-sizing: border-box;
+}
 
 body{
-    margin: 0;
-    height: 100vh - 10em;
-    align-items: flex-start;
+    margin: 20px;
 }
 
-/* Custom search bar*/
-#search-bar-container {
+/* Search bar */
+
+#search-bar{
     display: flex;
-    align-items: center;
+    width: 590px;
     justify-content: center;
-    background-color: transparent;
-    margin-top: 8em;
+    align-items: center;
+    padding: 0 10px;
+    background-color: #fff;
+    border-radius: 22px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    gap: var(--med-gap);
+    margin-top: 169px;
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
-    height: 45px;
-    border-radius: 28px;
-    box-shadow: 0 0 5px #AAA;
 }
 
 #search-input{
-    font-size: 16px;
-    font-family: 'Lexend', sans-serif;
+    display: flex;
+    height: 44px;
+    flex: 1 0 0;
+
+    flex-direction: column;
+    justify-content: center;
     border: none;
-    outline: none;
-    background-color: transparent;
-    color: #333;
-    width: 100%;
-    height: 100%;    
-    padding: 14px;
-    font-size: large;
 }
 
-#search-input::placeholder {
-    color: rgba(0, 0, 0, 0.25);
+#search-input::placeholder{
+    color: #000;
 }
-    
-#search-input:focus::placeholder{
+
+#search-input:focus {
+    outline: none;
+}
+
+#search-input:focus::placeholder {
     color: transparent;
 }
 
@@ -51,61 +71,215 @@ body{
   appearance: none;
 }
 
-#search-icon {
-    color: #888;
-    margin-left: 14px;
-    z-index: -1;
+#search-icon, #add-icon{
     user-select: none;
 }
 
-/* to show database */
-.database-shower{
-    width: 60vw;
-    margin-top: 3em;
+/* Filters */
+
+#filter-box{
+    width: 590px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 12px;
+    margin-top: 23px;
     margin-left: auto;
     margin-right: auto;
-    background: #AAA;
-    min-width: 360px;
 }
 
-.item-container{
-    background-color: #999;
-    margin-bottom: 0.75em;
-    width: 400px;    
+.filter{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;;
+    background-color: var(--lightest-pink);
+    padding: 5px 10px;
+    border-radius: var(--smol-gap);
+    font-size: 16px;
+    height: 34px;
+    gap: 5px;
+}
+
+/* Main box */
+#main-box{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 1120px;
+    margin-top: var(--big-gap);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    gap: var(--biggest-gap)
+}
+
+/* Left box */
+
+#left-box{
+    display: flex;
+    flex-direction: column;
+    width: 435px;
+    margin-top: var(--big-gap);
+    background-color: #fff;
+    gap: 18px;
+}
+
+#left-box, #sort-select, #query-shower, #item-box{
+    color: #000;
+    font-family: Outfit;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.semibold{
+    font: inherit;
+    font-weight: 600;
+}
+
+.custom-pink{
+    font: inherit;
+    color: #E25A71;
+}
+
+.nom-poste{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#query-shower{
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--med-gap);
+    gap: var(--med-gap);
+}
+
+.item-box{
+    background: #fff;
+    border: 1px solid #bbb;
     border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
     position: relative;
-    padding: 5px;
-    
 }
 
-.icon{
+.item-box-title{
+    display: flex;
+    width: 300px;
+}
+
+.status-icon{
+    display: flex;
+    padding: 5px 10px;
     position: absolute;
-    top: 0;
-    right: 0;
-    display: block;
-    border-radius: 50%;
-    height: 2em;
-    width: 2em;
-    margin: 5px;
+    right: 10px;
+    top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+
+    font-family: Outfit;
+    font-style: normal;
+    line-height: normal;
 }
 
-.grey {
-    background-color:grey;
+.status-red{
+    background-color: rgba(255, 180, 226, 0.50);
+    color: #712938;
 }
 
-.red{
-    background-color: red;
+.status-green{
+    background-color: rgba(102, 226, 184, 0.5);
+    color: #295A49;
 }
 
-.yellow{
-    background-color: yellow;
+.status-orange{
+    background-color: rgba(255, 221, 183, 0.50);
+    color: #803712;
 }
 
-.green{
-    background-color: green;
+/* Right box*/
+
+#right-box{
+    display: flex;
+    position: sticky;
+    top: 20px;
+    flex-direction: column;
+    width: 625px;
+    height: auto;
+    min-height: 400px;
+    max-height: 60vh;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #bbb;
+    margin: 20px 0px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+#right-box, #item-header , #nom-poste-emphasis{
+    font-family: VT323;
+}
+
+#item-header{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 20px;
+    gap:var(--med-gap);
+    border-radius: var(--med-gap) var(--med-gap) 0 0;
+    border-bottom: 1px solid #BBB;
+    background: #FFF;
+}
+
+#item-header-subcontainer{
+    color: #000;
+    font-family: VT323;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+}
+
+#nom-poste-emphasis{
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+}
+
+#crud-operations{
+    display: flex;
+    flex-direction: row;
+    gap: var(--med-gap);
+}
+
+#crud-operations * {
+    font-family: VT323;
+    color: #F77891;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+#item-content{
+    margin: var(--big-gap);
+}
+
+#item-content, #item-content * {
+    font-family: VT323;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#item-content li {
+    list-style: none;
 }
