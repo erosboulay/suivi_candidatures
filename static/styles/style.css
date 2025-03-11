@@ -92,14 +92,25 @@ body{
 
 .filter{
     display: flex;
+    text-align: center;
     flex-direction: row;
     align-items: flex-start;;
+    justify-content: center;
     background-color: var(--lightest-pink);
     padding: 5px 10px;
     border-radius: var(--smol-gap);
     font-size: 16px;
     height: 34px;
     gap: 5px;
+}
+
+.filter-text{
+    display: flex;
+    width: 44px;
+    font-size: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch
 }
 
 /* Main box */
@@ -199,6 +210,11 @@ body{
 .status-orange{
     background-color: rgba(255, 221, 183, 0.50);
     color: #803712;
+}
+
+.status-grey{
+    background-color: rgba(219, 217, 225, 0.50);
+    color: #444444;
 }
 
 /* Right box*/

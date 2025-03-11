@@ -9,7 +9,7 @@
 </div>
 
 <div id = "filter-box">
-    <div class = "filter">Statut<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "filter"><div class = "filter-text">Statut</div><span class="material-symbols-outlined">arrow_drop_down</span></div>
     <div class = "filter">Lieu<span class="material-symbols-outlined">arrow_drop_down</span></div>
     <div class = "filter">Entreprise<span class="material-symbols-outlined">arrow_drop_down</span></div>
     <div class = "filter">Candidature spontanée</div>
@@ -34,7 +34,13 @@
                 </div>
                 
                 {{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}
-                <div class = "status-icon status-green">{{candidature.statut}}</div>
+                <div class = "status-icon 
+                    {% if candidature.statut == 'Accepté' %} status-green
+                    {% elif candidature.statut == 'Refusé' %} status-red
+                    {% elif candidature.statut == 'Entretien' %} status-orange
+                    {% else %} status-grey
+                    {% endif %}
+                ">{{candidature.statut}}</div>
             </div>
             {% endfor %}
 

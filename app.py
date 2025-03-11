@@ -22,18 +22,17 @@ class Candidature(db.Model):
     statut = db.Column(db.String(25))
     candidature_spontanee = db.Column(db.Boolean)
 
-    # TODO: finir de coder la représentation textuelle
-    def __repr__(self):
-        return f'<Entreprise {self.entreprise}>'
     
 @app.route("/")
 def index():
     with app.app_context():
         db.create_all()
-    
+
     candidatures = Candidature.query.all()
     return render_template('index.html', candidatures=candidatures)
     
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
