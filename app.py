@@ -1,38 +1,40 @@
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-import os
+from sqlalchemy import create_engine, text, MetaData, select
+from sqlalchemy import Table, Column, Integer, String, Date, Boolean
+from sqlalchemy.orm import Session
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+from flask import Flask, render_template
+
+engine = create_engine("sqlite+pysqlite:///database.db", echo=True)
+
+
+# setting up metadata
+metadata_obj = MetaData()
+Candidature = Table("candidature", 
+                    metadata_obj,
+                    Column("id", Integer,primary_key= True),
+                    Column("entreprise", String(100)),
+                    Column("ville", String(100)),
+                    Column("pays", String(100)),
+                    Column("poste", String(100)),
+                    Column("lien_candidature", String(255)),
+                    Column("source", String(100)),
+                    Column("date_demande", Date),
+                    Column("statut", String(25)),
+                    Column("candidature_spontanee", Boolean)
+                    )
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-        'sqlite:///' + os.path.join(basedir, 'database.db')
 
-db = SQLAlchemy(app)
-
-class Candidature(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    entreprise = db.Column(db.String(100))
-    ville = db.Column(db.String(100))
-    pays = db.Column(db.String(100))
-    poste = db.Column(db.String(100))    
-    lien_candidature = db.Column(db.String(255))
-    source = db.Column(db.String(100))
-    date_demande = db.Column(db.Date)
-    statut = db.Column(db.String(25))
-    candidature_spontanee = db.Column(db.Boolean)
-
-    
-@app.route("/")
+@app.route('/')
 def index():
-    with app.app_context():
-        db.create_all()
+    with Session(engine) as session:
+        stmt = select(Candidature)
+        candidatures = session.execute(stmt).all()
 
-    candidatures = Candidature.query.all()
-    return render_template('index.html', candidatures=candidatures)
-    
+    return render_template("index.html", candidatures = candidatures)
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+if __name__ == '__main__':
+    with Session(engine):
+        metadata_obj.create_all(engine)
+    app.run(debug = True)
