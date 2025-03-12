@@ -28,12 +28,12 @@
             <div id = "nb-res" class="semibold">666 résultats</div>
 
             {% for candidature in candidatures %}
-            <div class = "item-box">
+            <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}">
                 <div class = "item-box-title">
                     <span class = "nom-poste"> {{ candidature.poste }} </span><br/>
                 </div>
                 
-                {{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}
+                <div class = "details">{{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}</div>
                 <div class = "status-icon 
                     {% if candidature.statut == 'Accepté' %} status-green
                     {% elif candidature.statut == 'Refusé' %} status-red
@@ -50,7 +50,7 @@
         <div id = "item-header">
             <div id = "item-header-subcontainer">
                 <span id = "nom-poste-emphasis"> {{candidatures[0].poste}} </span><br/>
-                {{candidatures[0].entreprise}} | {{candidatures[0].ville}} - {{candidatures[0].pays}}
+                <div id = "details-emphasis">{{candidatures[0].entreprise}} | {{candidatures[0].ville}} - {{candidatures[0].pays}}</div>
                 <div class = "status-icon status-green">Accepté</div>
             </div>
             

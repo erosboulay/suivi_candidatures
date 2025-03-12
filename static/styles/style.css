@@ -173,8 +173,16 @@ body{
     border: 1px solid #bbb;
     border-radius: 10px;
     padding: 10px;
-    font-size: 14px;
     position: relative;
+    cursor: pointer;
+}
+
+.details{
+    font-size: 14px;
+}
+
+.pressed{
+    border-color: #222;
 }
 
 .item-box-title{
@@ -254,6 +262,14 @@ body{
     font-family: VT323;
     font-size: 20px;
     font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    width: 500px;
+}
+
+#details-emphasis{
+    font-family: VT323;
+    font-size: 20px;
     font-weight: 400;
     line-height: 130%;
 }
