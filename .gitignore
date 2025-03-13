@@ -1,5 +1,12 @@
 database.db
+
 populating.py
+populating_candidature.py
+populating_entretien.py
+populating_reponse.py
 depopulating.py
+
 __pycache__
 fill_database.csv
+entretiens.csv
+reponses.csv

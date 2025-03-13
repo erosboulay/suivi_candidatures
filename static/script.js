@@ -24,5 +24,37 @@ boxes.forEach( box => {
         right_container.querySelector('.status-icon').classList.remove(old_class);
         right_container.querySelector('.status-icon').classList.add(new_class);
 
+        const id_candidature = parseInt(box.getAttribute('data-candi-id'));
+
+        fetch(`/date/${id_candidature}`)
+            .then(reponse => reponse.json())
+            .then(resp => {
+                console.log(resp);
+                right_container.querySelector('#date-postule-emphasis').textContent = `Postulé le ${resp}`;
+            
+            });
+
+        fetch(`/reponses/${id_candidature}`)
+            .then(reponse => reponse.json())
+            .then(reponses => {
+                console.log(reponses);
+                right_container.querySelector('#reponse-emphasis').innerHTML = '';
+                reponses.forEach(resp => {
+                        right_container.querySelector('#reponse-emphasis').innerHTML += resp.contenu + '<br>';
+                    }
+                );
+            });
+
+        fetch(`/entretiens/${id_candidature}`)
+            .then(reponse => reponse.json())
+            .then(entretiens => {
+                console.log(entretiens);
+                right_container.querySelector('#entretien-emphasis').innerHTML = '';
+                entretiens.forEach(entretien => {
+                        right_container.querySelector('#entretien-emphasis').innerHTML += entretien.type + '<br>';
+                    }
+                );
+            });
+
     })
 });

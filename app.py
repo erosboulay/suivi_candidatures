@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, text, MetaData, select
 from sqlalchemy import Table, Column, Integer, String, Date, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 engine = create_engine("sqlite+pysqlite:///database.db", echo=True)
 
@@ -52,6 +52,28 @@ def index():
         candidatures = session.execute(stmt).all()
 
     return render_template("index.html", candidatures = candidatures)
+
+@app.route('/entretiens/<int:id_candidature>')
+def get_entretiens(id_candidature):
+    with Session(engine) as session:
+        stmt = select(Entretien).where(Entretien.c.id_candidature == id_candidature)
+        entretiens = session.execute(stmt).all()
+        return jsonify([{'type': row.type, 'date' : row.date} for row in entretiens])
+    
+@app.route('/reponses/<int:id_candidature>')
+def get_reponses(id_candidature):
+    with Session(engine) as session:
+        stmt = select(Reponse).where(Reponse.c.id_candidature == id_candidature)
+        reponses = session.execute(stmt).all()
+        return jsonify([{'contenu': row.contenu, 'date': row.date} for row in reponses])
+    
+@app.route('/date/<int:id_candidature>')
+def get_date(id_candidature):
+    with Session(engine) as session:
+        stmt = select(Candidature).where(Candidature.c.id == id_candidature)
+        resp = session.execute(stmt).all()
+        return jsonify(resp[0].date_demande)
+        
 
 if __name__ == '__main__':
     metadata_obj.create_all(engine)
