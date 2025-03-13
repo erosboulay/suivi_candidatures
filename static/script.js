@@ -16,6 +16,13 @@ boxes.forEach( box => {
         const new_details = box.querySelector('.details').textContent;
         right_container.querySelector('#details-emphasis').textContent= new_details;
 
+        const new_text = box.querySelector('.status-icon').textContent;
+        right_container.querySelector('.status-icon').textContent=new_text;
+
+        const new_class = box.querySelector('.status-icon').classList.item(1);
+        const old_class = right_container.querySelector('.status-icon').classList.item(1);
+        right_container.querySelector('.status-icon').classList.remove(old_class);
+        right_container.querySelector('.status-icon').classList.add(new_class);
 
     })
 });

@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, text, MetaData, select
-from sqlalchemy import Table, Column, Integer, String, Date, Boolean
+from sqlalchemy import Table, Column, Integer, String, Date, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session
 
 from flask import Flask, render_template
@@ -23,18 +23,36 @@ Candidature = Table("candidature",
                     Column("candidature_spontanee", Boolean)
                     )
 
+Reponse = Table("reponse", 
+            metadata_obj,
+            Column("id", Integer,primary_key= True),
+            Column("id_candidature", Integer, ForeignKey("candidature.id")),
+            Column("date", Date),
+            Column("contenu", Text)
+            )
+
+Entretien = Table("entretien", 
+            metadata_obj,
+            Column("id", Integer,primary_key= True),
+            Column("id_candidature", Integer, ForeignKey("candidature.id")),
+            Column("date", Date),
+            Column("type", Text)
+            )
+
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     with Session(engine) as session:
+        select(Reponse)
+        select(Entretien)
         stmt = select(Candidature)
         candidatures = session.execute(stmt).all()
 
     return render_template("index.html", candidatures = candidatures)
 
 if __name__ == '__main__':
-    with Session(engine):
-        metadata_obj.create_all(engine)
-    app.run(debug = True)
+    metadata_obj.create_all(engine)
+    app.run()
