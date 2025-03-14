@@ -25,7 +25,7 @@
             Dans l'ordre: <span class = "custom-pink">croissant</span> - <span class = "semibold">décroissant</span>
         </div>
         <div id = "query-shower">
-            <div id = "nb-res" class="semibold">666 résultats</div>
+            <div id = "nb-res" class="semibold">{{nmb_c}} résultats</div>
 
             {% for candidature in candidatures %}
             <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}" data-candi-id = "{{candidature.id}}">

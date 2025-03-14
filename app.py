@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text, MetaData, select
+from sqlalchemy import create_engine, text, MetaData, select, func
 from sqlalchemy import Table, Column, Integer, String, Date, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session
 
@@ -50,9 +50,11 @@ def index():
         select(Reponse)
         select(Entretien)
         stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
+        stmt2 = select(func.count(Candidature.c.id))
         candidatures = session.execute(stmt).all()
+        nmb_c = session.execute(stmt2).scalar()
 
-    return render_template("index.html", candidatures = candidatures)
+    return render_template("index.html", candidatures = candidatures, nmb_c = nmb_c)
 
 @app.route('/entretiens/<int:id_candidature>')
 def get_entretiens(id_candidature):
