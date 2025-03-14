@@ -22,7 +22,7 @@
     <div id = "left-box">
         <div id = "sort-select"> 
             Trier par: <span class = "semibold">date de création</span> - <span class = "custom-pink">date de mise à jour</span><br/>
-            Dans l'ordre: <span class = "semibold">croissant</span> - <span class = "custom-pink">décroissant</span>
+            Dans l'ordre: <span class = "custom-pink">croissant</span> - <span class = "semibold">décroissant</span>
         </div>
         <div id = "query-shower">
             <div id = "nb-res" class="semibold">666 résultats</div>
@@ -30,7 +30,11 @@
             {% for candidature in candidatures %}
             <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}" data-candi-id = "{{candidature.id}}">
                 <div class = "item-box-title">
-                    <span class = "nom-poste"> {{ candidature.poste }} </span><br/>
+                    <span class = "nom-poste"> 
+                        {% if candidature.candidature_spontanee %} Candidature spontanée
+                        {% else %}  {{ candidature.poste }} 
+                        {% endif %}
+                    </span><br/>
                 </div>
                 
                 <div class = "details">{{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}</div>
@@ -61,15 +65,19 @@
             </div>
         </div>
         <div id = "item-content">
-            <div id = "date-postule-emphasis">Postulé le 01/11/1111</div><br>
+            <div id = "date-postule-emphasis">Postulé le : 01/11/1111</div><br>
 
+            
             <div id = "reponse-emphasis">
-                Réponses de l’entreprise: <br>
+                Réponses de l’entreprise: 
+                <br>
                 &bull; 01/12/1111: Propose contrat
             </div>
             <br>
+            
             <div id = "entretien-emphasis">
-                Entretiens: <br>
+                Entretiens: 
+                <br>
                 &bull; 24/11/1111: Entretien technique 
             </div>
         </div>

@@ -3,6 +3,7 @@ from sqlalchemy import Table, Column, Integer, String, Date, Boolean, Text, Fore
 from sqlalchemy.orm import Session
 
 from flask import Flask, render_template, jsonify
+from datetime import datetime
 
 engine = create_engine("sqlite+pysqlite:///database.db", echo=True)
 
@@ -48,7 +49,7 @@ def index():
     with Session(engine) as session:
         select(Reponse)
         select(Entretien)
-        stmt = select(Candidature)
+        stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
         candidatures = session.execute(stmt).all()
 
     return render_template("index.html", candidatures = candidatures)
@@ -58,21 +59,21 @@ def get_entretiens(id_candidature):
     with Session(engine) as session:
         stmt = select(Entretien).where(Entretien.c.id_candidature == id_candidature)
         entretiens = session.execute(stmt).all()
-        return jsonify([{'type': row.type, 'date' : row.date} for row in entretiens])
+        return jsonify([{'type': row.type, 'date' : row.date.strftime("%d/%m/%Y")} for row in entretiens])
     
 @app.route('/reponses/<int:id_candidature>')
 def get_reponses(id_candidature):
     with Session(engine) as session:
         stmt = select(Reponse).where(Reponse.c.id_candidature == id_candidature)
         reponses = session.execute(stmt).all()
-        return jsonify([{'contenu': row.contenu, 'date': row.date} for row in reponses])
+        return jsonify([{'contenu': row.contenu, 'date': row.date.strftime("%d/%m/%Y")} for row in reponses])
     
 @app.route('/date/<int:id_candidature>')
 def get_date(id_candidature):
     with Session(engine) as session:
         stmt = select(Candidature).where(Candidature.c.id == id_candidature)
         resp = session.execute(stmt).all()
-        return jsonify(resp[0].date_demande)
+        return jsonify(resp[0].date_demande.strftime("%d/%m/%Y"))
         
 
 if __name__ == '__main__':
