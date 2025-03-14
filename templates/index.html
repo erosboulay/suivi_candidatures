@@ -21,8 +21,8 @@
 <div id = "main-box">
     <div id = "left-box">
         <div id = "sort-select"> 
-            Trier par: <span class = "semibold">date de création</span> - <span class = "custom-pink">date de mise à jour</span><br/>
-            Dans l'ordre: <span class = "custom-pink">croissant</span> - <span class = "semibold">décroissant</span>
+            Trier par: &nbsp; <span class = "custom-pink tri tri-actif ">date de création</span> - <span class = "custom-pink tri">date de mise à jour</span><br/>
+            Dans l'ordre: &nbsp; <span class = "custom-pink ordre ordre-actif">décroissant</span> - <span class = "custom-pink ordre">croissant</span>
         </div>
         <div id = "query-shower">
             <div id = "nb-res" class="semibold">{{nmb_c}} résultats</div>
@@ -55,7 +55,13 @@
             <div id = "item-header-subcontainer">
                 <span id = "nom-poste-emphasis"> {{candidatures[0].poste}} </span><br/>
                 <div id = "details-emphasis">{{candidatures[0].entreprise}} | {{candidatures[0].ville}} - {{candidatures[0].pays}}</div>
-                <div class = "status-icon status-green">Accepté</div>
+                <div class = "status-icon 
+                    {% if candidatures[0].statut == 'Accepté' %} status-green
+                    {% elif candidatures[0].statut == 'Refusé' %} status-red
+                    {% elif candidatures[0].statut == 'Entretien' %} status-orange
+                    {% else %} status-grey
+                    {% endif %}
+                ">{{candidatures[0].statut}}</div>
             </div>
             
             <div id = "crud-operations">
@@ -65,20 +71,11 @@
             </div>
         </div>
         <div id = "item-content">
-            <div id = "date-postule-emphasis">Postulé le : 01/11/1111</div><br>
-
-            
+            <div id = "date-postule-emphasis"></div><br>
             <div id = "reponse-emphasis">
-                Réponses de l’entreprise: 
-                <br>
-                &bull; 01/12/1111: Propose contrat
             </div>
             <br>
-            
             <div id = "entretien-emphasis">
-                Entretiens: 
-                <br>
-                &bull; 24/11/1111: Entretien technique 
             </div>
         </div>
 

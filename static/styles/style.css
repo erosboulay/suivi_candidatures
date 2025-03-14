@@ -146,14 +146,19 @@ body{
     line-height: normal;
 }
 
-.semibold{
-    font: inherit;
-    font-weight: 600;
-}
-
 .custom-pink{
     font: inherit;
     color: #E25A71;
+}
+
+.tri, .ordre {
+    cursor: pointer;
+}
+
+.tri-actif, .ordre-actif{
+    font: inherit;
+    font-weight: 600;
+    color: #000;
 }
 
 .nom-poste{

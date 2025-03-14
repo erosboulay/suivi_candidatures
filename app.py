@@ -80,4 +80,4 @@ def get_date(id_candidature):
 
 if __name__ == '__main__':
     metadata_obj.create_all(engine)
-    app.run()
+    app.run(debug=True)
