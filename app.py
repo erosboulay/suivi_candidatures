@@ -50,13 +50,30 @@ def index():
     with Session(engine) as session:
         select(Reponse)
         select(Entretien)
-        stmt = select(Candidature)
+        stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
         stmt2 = select(func.count(Candidature.c.id))
         candidatures = session.execute(stmt).all()
+        
+        candidatures_dict = [
+            {
+                'id': row.id,
+                'entreprise': row.entreprise,
+                'ville': row.ville,
+                'pays': row.pays,
+                'poste': row.poste,
+                'lien_candidature': row.lien_candidature,
+                'source': row.source,
+                'date_demande': row.date_demande.strftime("%d/%m/%Y"),
+                'statut': row.statut,
+                'candidature_spontanee': row.candidature_spontanee,
+                'dernier_maj': row.dernier_maj.strftime("%d/%m/%Y") if row.dernier_maj else None
+            }
+            for row in candidatures
+        ]
         nmb_c = session.execute(stmt2).scalar()
+        return render_template("index.html", candidatures = candidatures_dict, nmb_c = nmb_c)
 
-    return render_template("index.html", candidatures = candidatures, nmb_c = nmb_c)
-
+# returns all needed entretiens info for a candidature to flask app
 @app.route('/entretiens/<int:id_candidature>')
 def get_entretiens(id_candidature):
     with Session(engine) as session:
@@ -64,20 +81,13 @@ def get_entretiens(id_candidature):
         entretiens = session.execute(stmt).all()
         return jsonify([{'type': row.type, 'date' : row.date.strftime("%d/%m/%Y")} for row in entretiens])
     
+# returns all needed reponses info for a candidature to flask app
 @app.route('/reponses/<int:id_candidature>')
 def get_reponses(id_candidature):
     with Session(engine) as session:
         stmt = select(Reponse).where(Reponse.c.id_candidature == id_candidature)
         reponses = session.execute(stmt).all()
         return jsonify([{'contenu': row.contenu, 'date': row.date.strftime("%d/%m/%Y")} for row in reponses])
-    
-@app.route('/date/<int:id_candidature>')
-def get_date(id_candidature):
-    with Session(engine) as session:
-        stmt = select(Candidature).where(Candidature.c.id == id_candidature)
-        resp = session.execute(stmt).all()
-        return jsonify(resp[0].date_demande.strftime("%d/%m/%Y"))
-        
 
 if __name__ == '__main__':
     metadata_obj.create_all(engine)

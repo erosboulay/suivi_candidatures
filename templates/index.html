@@ -29,8 +29,12 @@
 
         <div id = "query-shower" class = "decroissant">
             
-            {% for candidature in candidatures | sort(attribute = "date_demande", reverse = true) %}
-            <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}" data-candi-id = "{{candidature.id}}">
+            {% for candidature in candidatures %}
+            <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}" 
+                data-candi-id = "{{candidature.id}}" 
+                data-dernier-maj = "{{candidature.dernier_maj}}"
+                data-date-demande = "{{ candidature.date_demande }}"
+                >
                 <div class = "item-box-title">
                     <span class = "nom-poste"> 
                         {% if candidature.candidature_spontanee %} Candidature spontanée

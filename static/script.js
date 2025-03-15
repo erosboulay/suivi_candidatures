@@ -6,17 +6,22 @@ const tri_boxes = document.querySelectorAll('.tri');
 const ordre_boxes = document.querySelectorAll('.ordre');
 
 
+// when document is loaded, make the first candidature pressed and show it in right container
+document.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM fully loaded and parsed");
+    box = document.querySelector('.item-box');
+    updateBox(box);
+});
 
-
-
+// updates the right container when the selected candidature has changed
 function updateRightContainer(id_candidature) {
 
-    Promise.all([fetch(`/date/${id_candidature}`),fetch(`/reponses/${id_candidature}`), fetch(`/entretiens/${id_candidature}`)])
+    Promise.all([fetch(`/reponses/${id_candidature}`), fetch(`/entretiens/${id_candidature}`)])
             .then(responses => Promise.all(responses.map(response => response.json())))
             .then (resp => {
-                date = resp[0];
-                reponses = resp[1];
-                entretiens = resp[2];
+                date = document.querySelector(`[data-candi-id="${id_candidature}"]`).getAttribute('data-date-demande');
+                reponses = resp[0];
+                entretiens = resp[1];
 
                 // date
                 console.log(date);
@@ -60,12 +65,7 @@ function updateRightContainer(id_candidature) {
 
 }
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    console.log("DOM fully loaded and parsed");
-    box = document.querySelector('.item-box');
-    updateBox(box);
-});
-
+// Function that makes a candidature (box) pressed and shown in right container
 function updateBox(box){
     boxes.forEach(b => b.classList.remove('pressed'));
     box.classList.add('pressed');
@@ -89,12 +89,14 @@ function updateBox(box){
     updateRightContainer(id_candidature);
 }
 
+// when a candidature is clicked, make it pressed and show it in right container
 boxes.forEach( box => {
     box.addEventListener('click', () =>{
             updateBox(box);
         });
 });
 
+// TODO: Fully implement sorting 
 tri_boxes.forEach( tri_box => {
     tri_box.addEventListener('click', () => {
         if (!tri_box.classList.contains("tri-actif")){
@@ -104,6 +106,7 @@ tri_boxes.forEach( tri_box => {
     })
 })
 
+// when the order is changed, update the css and change the pressed candidature to the first one and show it in container
 ordre_boxes.forEach( ordre_box => {
     ordre_box.addEventListener('click', () => {
         if (!ordre_box.classList.contains("ordre-actif")){
@@ -124,3 +127,4 @@ ordre_boxes.forEach( ordre_box => {
         }
     })
 })
+
