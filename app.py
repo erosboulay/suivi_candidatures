@@ -21,7 +21,8 @@ Candidature = Table("candidature",
                     Column("source", String(100)),
                     Column("date_demande", Date),
                     Column("statut", String(25)),
-                    Column("candidature_spontanee", Boolean)
+                    Column("candidature_spontanee", Boolean),
+                    Column("dernier_maj", Date)
                     )
 
 Reponse = Table("reponse", 
