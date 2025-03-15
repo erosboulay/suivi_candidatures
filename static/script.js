@@ -62,33 +62,36 @@ function updateRightContainer(id_candidature) {
 
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM fully loaded and parsed");
-    updateRightContainer(1);
+    box = document.querySelector('.item-box');
+    updateBox(box);
 });
+
+function updateBox(box){
+    boxes.forEach(b => b.classList.remove('pressed'));
+    box.classList.add('pressed');
+
+    const new_title = box.querySelector('.nom-poste').textContent;
+    right_container.querySelector('#nom-poste-emphasis').textContent= new_title;
+
+    const new_details = box.querySelector('.details').textContent;
+    right_container.querySelector('#details-emphasis').textContent= new_details;
+
+    const new_text = box.querySelector('.status-icon').textContent;
+    right_container.querySelector('.status-icon').textContent=new_text;
+
+    const new_class = box.querySelector('.status-icon').classList.item(1);
+    const old_class = right_container.querySelector('.status-icon').classList.item(1);
+    right_container.querySelector('.status-icon').classList.remove(old_class);
+    right_container.querySelector('.status-icon').classList.add(new_class);
+
+    const id_candidature = parseInt(box.getAttribute('data-candi-id'));
+
+    updateRightContainer(id_candidature);
+}
 
 boxes.forEach( box => {
     box.addEventListener('click', () =>{
-
-        boxes.forEach(b => b.classList.remove('pressed'));
-        box.classList.add('pressed');
-
-        const new_title = box.querySelector('.nom-poste').textContent;
-        right_container.querySelector('#nom-poste-emphasis').textContent= new_title;
-
-        const new_details = box.querySelector('.details').textContent;
-        right_container.querySelector('#details-emphasis').textContent= new_details;
-
-        const new_text = box.querySelector('.status-icon').textContent;
-        right_container.querySelector('.status-icon').textContent=new_text;
-
-        const new_class = box.querySelector('.status-icon').classList.item(1);
-        const old_class = right_container.querySelector('.status-icon').classList.item(1);
-        right_container.querySelector('.status-icon').classList.remove(old_class);
-        right_container.querySelector('.status-icon').classList.add(new_class);
-
-        const id_candidature = parseInt(box.getAttribute('data-candi-id'));
-
-        updateRightContainer(id_candidature);
-
+            updateBox(box);
         });
 });
 
@@ -106,7 +109,18 @@ ordre_boxes.forEach( ordre_box => {
         if (!ordre_box.classList.contains("ordre-actif")){
             document.querySelector('.ordre-actif').classList.remove("ordre-actif");
             ordre_box.classList.add("ordre-actif");
+
+            document.querySelector("#query-shower").classList.toggle("decroissant");
+            document.querySelector("#query-shower").classList.toggle("croissant");
+
+            queryShower = document.querySelector('#query-shower');
+            if (queryShower.classList.contains("croissant")) {
+                updateBox(boxes.item(boxes.length-1));
+            } else {
+                box = document.querySelector('.item-box');
+                updateBox(box);
+            }
+            
         }
     })
 })
-

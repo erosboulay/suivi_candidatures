@@ -24,10 +24,12 @@
             Trier par: &nbsp; <span class = "custom-pink tri tri-actif ">date de création</span> - <span class = "custom-pink tri">date de mise à jour</span><br/>
             Dans l'ordre: &nbsp; <span class = "custom-pink ordre ordre-actif">décroissant</span> - <span class = "custom-pink ordre">croissant</span>
         </div>
-        <div id = "query-shower">
-            <div id = "nb-res" class="semibold">{{nmb_c}} résultats</div>
 
-            {% for candidature in candidatures %}
+        <div id = "nb-res" class="semibold">{{nmb_c}} résultats</div>
+
+        <div id = "query-shower" class = "decroissant">
+            
+            {% for candidature in candidatures | sort(attribute = "date_demande", reverse = true) %}
             <div class = "item-box {% if loop.index == 1 %} pressed {% endif %}" data-candi-id = "{{candidature.id}}">
                 <div class = "item-box-title">
                     <span class = "nom-poste"> 
@@ -53,15 +55,9 @@
     <div id = "right-box">
         <div id = "item-header">
             <div id = "item-header-subcontainer">
-                <span id = "nom-poste-emphasis"> {{candidatures[0].poste}} </span><br/>
-                <div id = "details-emphasis">{{candidatures[0].entreprise}} | {{candidatures[0].ville}} - {{candidatures[0].pays}}</div>
-                <div class = "status-icon 
-                    {% if candidatures[0].statut == 'Accepté' %} status-green
-                    {% elif candidatures[0].statut == 'Refusé' %} status-red
-                    {% elif candidatures[0].statut == 'Entretien' %} status-orange
-                    {% else %} status-grey
-                    {% endif %}
-                ">{{candidatures[0].statut}}</div>
+                <span id = "nom-poste-emphasis"></span><br/>
+                <div id = "details-emphasis"></div>
+                <div class = "status-icon status-grey"></div>
             </div>
             
             <div id = "crud-operations">

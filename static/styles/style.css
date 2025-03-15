@@ -134,7 +134,7 @@ body{
     width: 435px;
     margin-top: var(--big-gap);
     background-color: #fff;
-    gap: 18px;
+    gap: 5px;
 }
 
 #left-box, #sort-select, #query-shower, #item-box{
@@ -155,11 +155,12 @@ body{
     cursor: pointer;
 }
 
-.tri-actif, .ordre-actif{
+.tri-actif, .ordre-actif, .semibold{
     font: inherit;
     font-weight: 600;
     color: #000;
 }
+
 
 .nom-poste{
     font-size: 20px;
@@ -168,9 +169,16 @@ body{
 
 #query-shower{
     display: flex;
-    flex-direction: column;
-    margin-top: var(--med-gap);
+    margin-top: 0;
     gap: var(--med-gap);
+}
+
+.decroissant{
+    flex-direction: column;
+}
+
+.croissant{
+    flex-direction: column-reverse;
 }
 
 .item-box{

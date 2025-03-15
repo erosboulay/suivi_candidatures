@@ -50,7 +50,7 @@ def index():
     with Session(engine) as session:
         select(Reponse)
         select(Entretien)
-        stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
+        stmt = select(Candidature)
         stmt2 = select(func.count(Candidature.c.id))
         candidatures = session.execute(stmt).all()
         nmb_c = session.execute(stmt2).scalar()
