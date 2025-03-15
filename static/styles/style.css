@@ -88,6 +88,12 @@ body{
     margin-top: 23px;
     margin-left: auto;
     margin-right: auto;
+
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 
 .filter{
@@ -102,6 +108,13 @@ body{
     font-size: 16px;
     height: 34px;
     gap: 5px;
+    cursor: pointer;
+}
+
+.filter-applied{
+    background-color: var(--pink);
+    color: white;
+    font-weight: 5S00;
 }
 
 .filter-text{

@@ -96,7 +96,7 @@ boxes.forEach( box => {
         });
 });
 
-// TODO: Fully implement sorting 
+// Sorting 
 tri_boxes.forEach( tri_box => {
     tri_box.addEventListener('click', () => {
 
@@ -180,3 +180,7 @@ function parseDate(dateStr) {
     const [day, month, year] = dateStr.split('/').map(Number);
     return new Date(year, month - 1, day);
 }
+
+document.querySelector(".filter-click").addEventListener('click', () => {
+    document.querySelector(".filter-click").classList.toggle('filter-applied');
+})
