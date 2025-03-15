@@ -99,12 +99,60 @@ boxes.forEach( box => {
 // TODO: Fully implement sorting 
 tri_boxes.forEach( tri_box => {
     tri_box.addEventListener('click', () => {
-        if (!tri_box.classList.contains("tri-actif")){
-            document.querySelector('.tri-actif').classList.remove("tri-actif");
-            tri_box.classList.add("tri-actif");
+
+        document.querySelector('.tri-actif').classList.toggle("tri-actif");
+        tri_box.classList.toggle("tri-actif");
+
+        if (document.querySelector('.tri-actif').textContent === "date de création"){
+            sortByDateDemande();
+        }
+        else{
+            sortByUpdateDate();
+        }
+
+        queryShower = document.querySelector('#query-shower');
+        if (queryShower.classList.contains("croissant")) {
+            updateBox(boxes.item(boxes.length-1));
+        } else {
+            box = document.querySelector('.item-box');
+            updateBox(box);
         }
     })
 })
+
+function sortByUpdateDate(){
+    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    boxes.sort((a, b) => {
+        const dateA = a.getAttribute('data-dernier-maj').split('/');
+        const dateB = b.getAttribute('data-dernier-maj').split('/');
+        
+        const dateAFormatted = new Date(`${dateA[2]}-${dateA[1]}-${dateA[0]}`);
+        const dateBFormatted = new Date(`${dateB[2]}-${dateB[1]}-${dateB[0]}`);
+
+        return dateBFormatted - dateAFormatted;
+    })
+
+    const container = document.querySelector('#query-shower');
+    container.innerHTML = '';
+    boxes.forEach(box => container.appendChild(box)); // Re-ordering boxes
+}
+
+function sortByDateDemande(){
+    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    boxes.sort((a, b) => {
+        const dateA = a.getAttribute('data-date-demande').split('/');
+        const dateB = b.getAttribute('data-date-demande').split('/');
+        
+        const dateAFormatted = new Date(`${dateA[2]}-${dateA[1]}-${dateA[0]}`);
+        const dateBFormatted = new Date(`${dateB[2]}-${dateB[1]}-${dateB[0]}`);
+
+        return dateBFormatted - dateAFormatted;
+    })
+
+    const container = document.querySelector('#query-shower');
+    container.innerHTML = '';
+    boxes.forEach(box => container.appendChild(box)); // Re-ordering boxes
+}
 
 // when the order is changed, update the css and change the pressed candidature to the first one and show it in container
 ordre_boxes.forEach( ordre_box => {
@@ -128,3 +176,7 @@ ordre_boxes.forEach( ordre_box => {
     })
 })
 
+function parseDate(dateStr) {
+    const [day, month, year] = dateStr.split('/').map(Number);
+    return new Date(year, month - 1, day);
+}
