@@ -48,8 +48,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     with Session(engine) as session:
-        select(Reponse)
-        select(Entretien)
         stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
         stmt2 = select(func.count(Candidature.c.id))
         candidatures = session.execute(stmt).all()
