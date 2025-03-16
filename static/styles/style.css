@@ -159,6 +159,14 @@ body{
     line-height: normal;
 }
 
+#sort-select{
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
 .custom-pink{
     font: inherit;
     color: #E25A71;
@@ -300,6 +308,16 @@ body{
     line-height: 130%;
 }
 
+/* link styling */
+a:link, a:visited {
+    color: black;
+}
+
+a:hover {
+    color: var(--pink);
+}
+
+
 #nom-poste-emphasis{
     font-size: 32px;
     font-style: normal;
@@ -341,3 +359,9 @@ body{
 #item-content li {
     list-style: none;
 }
+
+/* for filtering */
+
+.hidden {
+    display: none;
+  }

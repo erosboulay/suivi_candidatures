@@ -34,6 +34,7 @@
                 data-candi-id = "{{candidature.id}}" 
                 data-dernier-maj = "{{candidature.dernier_maj}}"
                 data-date-demande = "{{ candidature.date_demande }}"
+                data-poste-url = "{{ candidature.lien_candidature }}"
                 >
                 <div class = "item-box-title">
                     <span class = "nom-poste"> 
@@ -59,7 +60,7 @@
     <div id = "right-box">
         <div id = "item-header">
             <div id = "item-header-subcontainer">
-                <span id = "nom-poste-emphasis"></span><br/>
+                <a id = "nom-poste-emphasis" href="">Website</a><br/>
                 <div id = "details-emphasis"></div>
                 <div class = "status-icon status-grey"></div>
             </div>

@@ -72,6 +72,8 @@ function updateBox(box){
 
     const new_title = box.querySelector('.nom-poste').textContent;
     right_container.querySelector('#nom-poste-emphasis').textContent= new_title;
+    const url = box.getAttribute('data-poste-url');
+    right_container.querySelector('#nom-poste-emphasis').href = url;
 
     const new_details = box.querySelector('.details').textContent;
     right_container.querySelector('#details-emphasis').textContent= new_details;
@@ -181,6 +183,36 @@ function parseDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
+// filtering
 document.querySelector(".filter-click").addEventListener('click', () => {
     document.querySelector(".filter-click").classList.toggle('filter-applied');
+    if (document.querySelector(".filter-click").classList.contains('filter-applied')){
+        filterCandidatureSpontanee();
+    }
+    else{
+        removeFilterCandidatureSpontanee();
+    }
 })
+
+function filterCandidatureSpontanee(){
+    // filter les candidatures
+    var boxes = Array.from(document.querySelectorAll(".item-box"));
+
+    boxes.forEach( box => {
+        if (box.querySelector(".nom-poste").textContent.trim() !== "Candidature spontanée"){
+            box.classList.add('hidden');
+        }
+    });
+}
+
+function removeFilterCandidatureSpontanee(){
+        // filter les candidatures
+        var boxes = Array.from(document.querySelectorAll(".item-box"));
+    
+        boxes.forEach( box => {
+            if (box.querySelector(".nom-poste").textContent.trim() != "Candidature spontanée"){
+                box.classList.remove('hidden');
+            }
+        });
+
+}
