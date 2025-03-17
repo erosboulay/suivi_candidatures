@@ -5,6 +5,11 @@ const right_container = document.querySelector('#right-box');
 const tri_boxes = document.querySelectorAll('.tri');
 const ordre_boxes = document.querySelectorAll('.ordre');
 
+// Filters
+const activeFilters = {
+    "Candidature spontanée": false,
+    "Statut": null
+};
 
 // when document is loaded, make the first candidature pressed and show it in right container
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,6 +72,12 @@ function updateRightContainer(id_candidature) {
 
 // Function that makes a candidature (box) pressed and shown in right container
 function updateBox(box) {
+
+    if (box === null){
+        console.log("No shown elements so no need to update box");
+        return;
+    }
+
     boxes.forEach(b => b.classList.remove('pressed'));
     box.classList.add('pressed');
 
@@ -91,6 +102,7 @@ function updateBox(box) {
     updateRightContainer(id_candidature);
 }
 
+// May return null if everything is hidden or no div exists
 function selectFirstBox() {
     const queryShower = document.querySelector('#query-shower');
     if (queryShower.classList.contains("croissant")) {
@@ -186,7 +198,20 @@ function parseDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
-// filtering
+// filtering UI
+const dropdown_filters = document.querySelectorAll(".has-dropdown")
+console.log(dropdown_filters);
+dropdown_filters.forEach(filter => {
+    filter.addEventListener('click', () => {
+        console.log(filter.querySelector(".filter-dropdown"));
+        if (filter.querySelector(".material-symbols-outlined").textContent !== "close_small"){
+            filter.querySelector(".filter-dropdown").classList.toggle('hidden');
+        }
+    })
+
+});
+
+// filtering: Decide to filter or remove filter (click)
 document.querySelector(".filter-click").addEventListener('click', () => {
     document.querySelector(".filter-click").classList.toggle('filter-applied');
     if (document.querySelector(".filter-click").classList.contains('filter-applied')) {
@@ -196,33 +221,70 @@ document.querySelector(".filter-click").addEventListener('click', () => {
         removeFilterCandidatureSpontanee();
     }
 
-    // TODO: need to update right container and change pressed button
     const box = selectFirstBox();        
     updateBox(box);
-
 })
 
-// filtering (dropdown)
+// filtering: Decide to filter or remove filter (drop down)
+// Apply filter
+document.querySelectorAll(".statut-filter").forEach( statut => {
+    statut.addEventListener('click', () => {
+        const has_dropdown = statut.parentElement.parentElement 
+        const texte = statut.textContent;
+        const texte_box = has_dropdown.querySelector(".filter-text");
+        const texte_icon = has_dropdown.querySelector(".material-symbols-outlined");
+        has_dropdown.querySelector(".filter").classList.add("filter-applied");
+        texte_box.textContent = texte;
+        texte_icon.textContent = "close_small";
+        has_dropdown.querySelector(".filter-dropdown").classList.add('hidden');
 
-const dropdown_filters = document.querySelectorAll(".has-dropdown")
-console.log(dropdown_filters);
-dropdown_filters.forEach(filter => {
-    filter.addEventListener('click', () => {
-        console.log(filter.querySelector(".filter-dropdown"));
-        filter.querySelector(".filter-dropdown").classList.toggle('hidden');
-        // filters or unfilters
-        
-        // update right container and change pressed button
-        const box = selectFirstBox();        
-        updateBox(box);
+        activeFilters.Statut = statut.textContent.trim();
+        filterStatut(statut.textContent);
     })
+})
 
+// Disable filter
+document.querySelectorAll(".has-dropdown").forEach( dropdown => {
+    const icon = dropdown.querySelector(".material-symbols-outlined");
+    console.log(icon);
+    dropdown.querySelector(".filter").addEventListener('click', (event) => {
+        console.log("in disable filter")
+        if (icon.textContent == "close_small"){
+            event.stopPropagation();
+            console.log("icon is close_small")
+            const text_node = dropdown.querySelector(".filter-text");
+            const text = text_node.getAttribute("data-filter-name");
+            text_node.textContent = text;
+            dropdown.querySelector(".material-symbols-outlined").textContent = "arrow_drop_down";   
+            dropdown.querySelector(".filter").classList.remove("filter-applied")
+
+            removeFilterStatut();
+        }
+       }
+    )
 });
 
+// dropdown filter functions
+// Pour quand on enlève une filtre (mettre à jour si implémenter + de filtres)
+function showBox(box){
+    if (activeFilters["Candidature spontanée"]) {
+        if (box.querySelector(".nom-poste").textContent.trim() !== "Candidature spontanée") {
+            return false;
+        }
+    }
+    if (activeFilters["Statut"] !== null) {
+        if (box.querySelector(".status-icon").textContent.trim() !== activeFilters["Statut"]) {
+            return false;
+        }
+    }
 
+    return true;
+}
+
+// onclick filter functions (Candidature Spontanée)
 function filterCandidatureSpontanee() {
-    // filter les candidatures
     var boxes = Array.from(document.querySelectorAll(".item-box"));
+    activeFilters["Candidature spontanée"] = true;
 
     boxes.forEach(box => {
         if (box.querySelector(".nom-poste").textContent.trim() !== "Candidature spontanée") {
@@ -235,11 +297,11 @@ function filterCandidatureSpontanee() {
 }
 
 function removeFilterCandidatureSpontanee() {
-    // filter les candidatures
     var boxes = Array.from(document.querySelectorAll(".item-box"));
+    activeFilters["Candidature spontanée"] = false;
 
     boxes.forEach(box => {
-        if (box.querySelector(".nom-poste").textContent.trim() != "Candidature spontanée") {
+        if (showBox(box)) {
             box.classList.remove('hidden');
         }
     });
@@ -247,4 +309,36 @@ function removeFilterCandidatureSpontanee() {
     const box = selectFirstBox();        
     updateBox(box);
 
+}
+
+// drop down filter functions (Statut)
+function filterStatut(){
+    var boxes = Array.from(document.querySelectorAll(".item-box"));
+
+    console.log(`Statut: ${activeFilters.Statut}`)
+
+    boxes.forEach(box => {
+        if (box.querySelector(".status-icon").textContent.trim() !== activeFilters.Statut) {
+                box.classList.add('hidden');
+        }
+    });
+
+    console.log(`Applied Status Filter`)
+    const box = selectFirstBox();        
+    updateBox(box);
+}
+
+function removeFilterStatut(){
+    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    const statut = activeFilters.Statut;
+    activeFilters.Statut = null;
+
+    boxes.forEach(box => {
+        if (showBox(box)) {
+            box.classList.remove('hidden');
+        }
+    });
+
+    const box = selectFirstBox();        
+    updateBox(box);
 }
