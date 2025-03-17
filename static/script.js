@@ -11,6 +11,10 @@ const activeFilters = {
     "Statut": null
 };
 
+document.addEventListener('click', () => {
+    console.log(activeFilters);
+})
+
 // when document is loaded, make the first candidature pressed and show it in right container
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
@@ -198,7 +202,7 @@ function parseDate(dateStr) {
     return new Date(year, month - 1, day);
 }
 
-// filtering UI
+// Filtering UI
 const dropdown_filters = document.querySelectorAll(".has-dropdown")
 console.log(dropdown_filters);
 dropdown_filters.forEach(filter => {
@@ -211,7 +215,7 @@ dropdown_filters.forEach(filter => {
 
 });
 
-// filtering: Decide to filter or remove filter (click)
+// Click filter
 document.querySelector(".filter-click").addEventListener('click', () => {
     document.querySelector(".filter-click").classList.toggle('filter-applied');
     if (document.querySelector(".filter-click").classList.contains('filter-applied')) {
@@ -225,21 +229,24 @@ document.querySelector(".filter-click").addEventListener('click', () => {
     updateBox(box);
 })
 
-// filtering: Decide to filter or remove filter (drop down)
+// Drop down filter
 // Apply filter
-document.querySelectorAll(".statut-filter").forEach( statut => {
-    statut.addEventListener('click', () => {
-        const has_dropdown = statut.parentElement.parentElement 
-        const texte = statut.textContent;
-        const texte_box = has_dropdown.querySelector(".filter-text");
-        const texte_icon = has_dropdown.querySelector(".material-symbols-outlined");
-        has_dropdown.querySelector(".filter").classList.add("filter-applied");
-        texte_box.textContent = texte;
-        texte_icon.textContent = "close_small";
-        has_dropdown.querySelector(".filter-dropdown").classList.add('hidden');
+document.querySelectorAll(".has-dropdown").forEach( has_dropdown => {
+    Array.from(has_dropdown.lastElementChild.children).forEach(child => {
+        child.addEventListener('click', () => {
+            const texte = child.textContent;
+            const texte_box = has_dropdown.querySelector(".filter-text");
+            const texte_icon = has_dropdown.querySelector(".material-symbols-outlined");
+            has_dropdown.querySelector(".filter").classList.add("filter-applied");
+            texte_box.textContent = texte;
+            texte_icon.textContent = "close_small";
+            has_dropdown.querySelector(".filter-dropdown").classList.add('hidden');
+            const filter = has_dropdown.querySelector(".filter-text").getAttribute("data-filter-name");
 
-        activeFilters.Statut = statut.textContent.trim();
-        filterStatut(statut.textContent);
+            activeFilters[filter] = child.textContent.trim();    
+            applyFilter();
+
+        })
     })
 })
 
@@ -258,7 +265,8 @@ document.querySelectorAll(".has-dropdown").forEach( dropdown => {
             dropdown.querySelector(".material-symbols-outlined").textContent = "arrow_drop_down";   
             dropdown.querySelector(".filter").classList.remove("filter-applied")
 
-            removeFilterStatut();
+            activeFilters[text] = null;
+            removeFilter();
         }
        }
     )
@@ -312,7 +320,7 @@ function removeFilterCandidatureSpontanee() {
 }
 
 // drop down filter functions (Statut)
-function filterStatut(){
+function applyFilter(){
     var boxes = Array.from(document.querySelectorAll(".item-box"));
 
     console.log(`Statut: ${activeFilters.Statut}`)
@@ -328,10 +336,8 @@ function filterStatut(){
     updateBox(box);
 }
 
-function removeFilterStatut(){
+function removeFilter(){
     var boxes = Array.from(document.querySelectorAll(".item-box"));
-    const statut = activeFilters.Statut;
-    activeFilters.Statut = null;
 
     boxes.forEach(box => {
         if (showBox(box)) {
