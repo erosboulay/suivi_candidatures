@@ -7,7 +7,7 @@ const ordre_boxes = document.querySelectorAll('.ordre');
 
 
 // when document is loaded, make the first candidature pressed and show it in right container
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
     const box = document.querySelector('.item-box');
     updateBox(box);
@@ -201,6 +201,24 @@ document.querySelector(".filter-click").addEventListener('click', () => {
     updateBox(box);
 
 })
+
+// filtering (dropdown)
+
+const dropdown_filters = document.querySelectorAll(".has-dropdown")
+console.log(dropdown_filters);
+dropdown_filters.forEach(filter => {
+    filter.addEventListener('click', () => {
+        console.log(filter.querySelector(".filter-dropdown"));
+        filter.querySelector(".filter-dropdown").classList.toggle('hidden');
+        // filters or unfilters
+        
+        // update right container and change pressed button
+        const box = selectFirstBox();        
+        updateBox(box);
+    })
+
+});
+
 
 function filterCandidatureSpontanee() {
     // filter les candidatures
