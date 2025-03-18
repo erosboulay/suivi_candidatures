@@ -20,7 +20,16 @@
             <div class = "filter-option">Refusé</div>
         </div>
     </div>
-    <div class = "filter">Lieu<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "has-dropdown">
+        <div class = "filter">
+            <div class = "filter-text" data-filter-name = "Ville">Ville</div><span class="material-symbols-outlined">arrow_drop_down</span>
+        </div>
+        <div class = "filter-dropdown hidden">
+            {% for ville in villes %}
+            <div class = "filter-option">{{ville}}</div>
+            {% endfor %}
+        </div>
+    </div>
     <div class = "filter">Entreprise<span class="material-symbols-outlined">arrow_drop_down</span></div>
     <div class = "filter filter-click">Candidature spontanée</div>
     <div class = "has-dropdown">
@@ -73,6 +82,7 @@
                 data-date-demande = "{{ candidature.date_demande }}"
                 data-poste-url = "{{ candidature.lien_candidature }}"
                 data-source = "{{candidature.source}}"
+                data-ville = "{{candidature.ville}}"
                 >
                 <div class = "item-box-title">
                     <span class = "nom-poste"> 

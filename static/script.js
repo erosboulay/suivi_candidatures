@@ -9,7 +9,10 @@ const ordre_boxes = document.querySelectorAll('.ordre');
 const activeFilters = {
     "Candidature spontanée": false,
     "Statut": null,
-    "Date": null
+    "Date": null,
+    "Dernière MàJ": null,
+    "Source": null,
+    "Ville": null
 };
 
 document.addEventListener('click', () => {
@@ -222,6 +225,14 @@ dropdown_filters.forEach(filter => {
 
 });
 
+document.addEventListener('click', (event) => {
+    dropdown_filters.forEach(filter => {
+        if (!filter.contains(event.target)) {
+            filter.querySelector(".filter-dropdown").classList.add('hidden');
+        }
+    });
+})
+
 // Click filter
 document.querySelector(".filter-click").addEventListener('click', () => {
     dropdown_filters.forEach(filter => {
@@ -312,6 +323,11 @@ function showBox(box){
             return false;
         }
     }
+    if (activeFilters["Ville"] !== null){
+        if (box.getAttribute("data-ville") !== activeFilters["Ville"]){
+            return false;
+        }
+    }
     return true;
 }
 
@@ -329,6 +345,9 @@ function hideBox(box, filter){
     }
     else if (filter == "Source"){
         return box.getAttribute("data-source") !== activeFilters.Source;
+    }
+    else if (filter == "Ville"){
+        return box.getAttribute("data-ville") !==  activeFilters.Ville;
     }
 }
 
