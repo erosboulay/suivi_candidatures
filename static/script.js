@@ -6,6 +6,7 @@ const tri_boxes = document.querySelectorAll('.tri');
 const ordre_boxes = document.querySelectorAll('.ordre');
 
 // Filters
+let inputText = null;
 const activeFilters = {
     "Candidature spontanée": false,
     "Statut": null,
@@ -301,6 +302,12 @@ document.querySelectorAll(".has-dropdown").forEach( dropdown => {
 // dropdown filter functions
 // Pour quand on enlève une filtre (mettre à jour si implémenter + de filtres)
 function showBox(box){
+    if (inputText !== null){
+        const title = normalizeText(box.querySelector('.nom-poste').textContent);
+        if (!title.includes(inputText)){
+            return false;
+        }
+    }
     if (activeFilters["Candidature spontanée"]) {
         if (box.querySelector(".nom-poste").textContent.trim() !== "Candidature spontanée") {
             return false;
@@ -461,4 +468,48 @@ function removeFilter(){
     const box = selectFirstBox();
     document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`        
     updateBox(box);
+}
+
+// Search input
+//filter
+const search_bar = document.querySelector("input[type='search']")
+search_bar.addEventListener('search', () => {
+    const searchTerm = normalizeText(search_bar.value);
+    console.log(`search term is :${searchTerm}`)
+    const boxes = document.querySelectorAll(".item-box");
+    let nb_boxes = 0;
+
+    inputText = null;
+    boxes.forEach(box => {
+        if (showBox(box)) {
+            box.classList.remove('hidden');
+        }
+        if (!box.classList.contains('hidden')){
+            nb_boxes ++;
+        }
+    });
+
+    if (searchTerm != ""){
+        nb_boxes = 0;
+
+        boxes.forEach(box => {
+            const title = normalizeText(box.querySelector('.nom-poste').textContent);
+            if (!title.includes(searchTerm)) {
+                box.classList.add('hidden');
+            }
+            if (!box.classList.contains('hidden')){
+                nb_boxes ++;
+            }
+        });
+        inputText = searchTerm;
+    }
+
+    document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`;
+    const box = selectFirstBox();        
+    updateBox(box);
+})
+
+//undo filter
+function normalizeText(text){
+    return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
