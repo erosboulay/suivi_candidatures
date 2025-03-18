@@ -12,7 +12,8 @@ const activeFilters = {
     "Date": null,
     "Dernière MàJ": null,
     "Source": null,
-    "Ville": null
+    "Ville": null,
+    "Entreprise": null
 };
 
 document.addEventListener('click', () => {
