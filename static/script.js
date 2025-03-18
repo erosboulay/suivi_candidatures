@@ -388,28 +388,38 @@ function isDateWithinPeriod(date_start, filter){
 // onclick filter functions (Candidature Spontanée)
 function filterCandidatureSpontanee() {
     var boxes = document.querySelectorAll(".item-box");
+    let nb_boxes = 0;
     activeFilters["Candidature spontanée"] = true;
 
     boxes.forEach(box => {
         if (box.querySelector(".nom-poste").textContent.trim() !== "Candidature spontanée") {
             box.classList.add('hidden');
         }
+        if (!box.classList.contains('hidden')){
+            nb_boxes ++;
+        }
     });
 
+    document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`
     const box = selectFirstBox();        
     updateBox(box);
 }
 
 function removeFilterCandidatureSpontanee() {
     var boxes = document.querySelectorAll(".item-box");
+    let nb_boxes = 0;
     activeFilters["Candidature spontanée"] = false;
 
     boxes.forEach(box => {
         if (showBox(box)) {
             box.classList.remove('hidden');
         }
+        if (!box.classList.contains('hidden')){
+            nb_boxes ++;
+        }
     });
 
+    document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`;
     const box = selectFirstBox();        
     updateBox(box);
 
