@@ -313,11 +313,15 @@ function showBox(box){
     }
     if (activeFilters["Date"] !== null) {
         const date_demande = parseDate(box.getAttribute("data-date-demande"));
-        return !isDateWithinPeriod(date_demande, "Date");
+        if (!isDateWithinPeriod(date_demande, "Date")){
+            return false;
+        }
     }
     if (activeFilters["Dernière MàJ"] !== null) {
         const date_demande = parseDate(box.getAttribute("data-dernier-maj"));
-        return !isDateWithinPeriod(date_demande, "Dernière MàJ");
+        if (!isDateWithinPeriod(date_demande, "Dernière MàJ")){
+            return false;
+        }
     }
     if (activeFilters["Source"] !== null){
         if (box.getAttribute("data-source") !== activeFilters["Source"]){
@@ -343,11 +347,11 @@ function hideBox(box, filter){
     }
     else if (filter == "Date"){
         const date_demande = parseDate(box.getAttribute("data-date-demande"));
-        return isDateWithinPeriod(date_demande, filter);
+        return !isDateWithinPeriod(date_demande, filter);
     }
     else if (filter == "Dernière MàJ"){
         const date_maj = parseDate(box.getAttribute("data-dernier-maj"));
-        return isDateWithinPeriod(date_maj, filter);
+        return !isDateWithinPeriod(date_maj, filter);
     }
     else if (filter == "Source"){
         return box.getAttribute("data-source") !== activeFilters.Source;
@@ -369,13 +373,13 @@ function isDateWithinPeriod(date_start, filter){
         console.log(`diffDays: ${diffDays}`)
 
         if (activeFilters[filter] === "7 derniers jours"){
-            return diffDays >= 7;
+            return diffDays < 7;
         }
         else if (activeFilters[filter] === "Plus de 14 jours"){
-            return diffDays <= 14;
+            return diffDays > 14;
         }
         else if (activeFilters[filter] === "Plus de 30 jours"){
-            return diffDays <= 30;
+            return diffDays > 30;
         }
         console.log("ERROR: There is no filter match, wth is going on!!!");
         return null;
