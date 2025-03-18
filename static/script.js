@@ -288,20 +288,13 @@ function showBox(box){
     }
     if (activeFilters["Date"] !== null) {
         const date_demande = parseDate(box.getAttribute("data-date-demande"));
-        const date_today = Date.now();
-        const diffTime = Math.abs(date_today - date_demande);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-        if (activeFilters.Date === "7 derniers jours" && diffDays >= 7){
-            return false;
-        }
-        else if (activeFilters.Date === "Plus de 14 jours" && diffDays <= 14){
-            return false;
-        }
-        else if (activeFilters.Date === "Plus de 30 jours" && diffDays <= 30){
-            return false;
-        }
+        return !isDateWithinPeriod(date_demande, "Date");
     }
+    if (activeFilters["Dernière MàJ"] !== null) {
+        const date_demande = parseDate(box.getAttribute("data-dernier-maj"));
+        return !isDateWithinPeriod(date_demande, "Dernière MàJ");
+    }
+
     return true;
 }
 
@@ -311,8 +304,18 @@ function hideBox(box, filter){
     }
     else if (filter == "Date"){
         const date_demande = parseDate(box.getAttribute("data-date-demande"));
+        return isDateWithinPeriod(date_demande, filter);
+    }
+    else if (filter == "Dernière MàJ"){
+        const date_maj = parseDate(box.getAttribute("data-dernier-maj"));
+        return isDateWithinPeriod(date_maj, filter);
+    }
+}
+
+// convenience functions
+function isDateWithinPeriod(date_start, filter){
         const date_today = Date.now();
-        const diffTime = Math.abs(date_today - date_demande);
+        const diffTime = Math.abs(date_today - date_start);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
         console.log(`diffDays: ${diffDays}`)
@@ -326,12 +329,13 @@ function hideBox(box, filter){
         else if (activeFilters[filter] === "Plus de 30 jours"){
             return diffDays <= 30;
         }
-    }
+        console.log("ERROR: There is no filter match, wth is going on!!!");
+        return null;
 }
 
 // onclick filter functions (Candidature Spontanée)
 function filterCandidatureSpontanee() {
-    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    var boxes = document.querySelectorAll(".item-box");
     activeFilters["Candidature spontanée"] = true;
 
     boxes.forEach(box => {
@@ -345,7 +349,7 @@ function filterCandidatureSpontanee() {
 }
 
 function removeFilterCandidatureSpontanee() {
-    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    var boxes = document.querySelectorAll(".item-box");
     activeFilters["Candidature spontanée"] = false;
 
     boxes.forEach(box => {
@@ -361,7 +365,7 @@ function removeFilterCandidatureSpontanee() {
 
 // drop down filter functions (Statut)
 function applyFilter(filter){
-    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    var boxes = document.querySelectorAll(".item-box");
 
     boxes.forEach(box => {
         if (hideBox(box, filter)){
@@ -375,7 +379,7 @@ function applyFilter(filter){
 }
 
 function removeFilter(){
-    var boxes = Array.from(document.querySelectorAll(".item-box"));
+    var boxes = document.querySelectorAll(".item-box");
 
     boxes.forEach(box => {
         if (showBox(box)) {
