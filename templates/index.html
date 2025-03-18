@@ -28,7 +28,9 @@
             <div class = "filter-text" data-filter-name = "Source">Source</div><span class="material-symbols-outlined">arrow_drop_down</span>
         </div>
         <div class = "filter-dropdown hidden">
-            <div class = "filter-option">placeholder</div>
+            {% for source in sources %}
+            <div class = "filter-option">{{source}}</div>
+            {% endfor %}
         </div>
     </div>
     <div class = "has-dropdown">

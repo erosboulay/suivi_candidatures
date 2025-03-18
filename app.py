@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text, MetaData, select, func
+from sqlalchemy import create_engine, text, MetaData, select, func, distinct
 from sqlalchemy import Table, Column, Integer, String, Date, Boolean, Text, ForeignKey
 from sqlalchemy.orm import Session
 
@@ -50,8 +50,9 @@ def index():
     with Session(engine) as session:
         stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
         stmt2 = select(func.count(Candidature.c.id))
+        stmt3 = select(distinct(Candidature.c.source)).order_by(Candidature.c.source.asc())
+
         candidatures = session.execute(stmt).all()
-        
         candidatures_dict = [
             {
                 'id': row.id,
@@ -69,7 +70,9 @@ def index():
             for row in candidatures
         ]
         nmb_c = session.execute(stmt2).scalar()
-        return render_template("index.html", candidatures = candidatures_dict, nmb_c = nmb_c)
+        sources = session.execute(stmt3).scalars().all()
+
+        return render_template("index.html", candidatures = candidatures_dict, sources = sources, nmb_c = nmb_c)
 
 # returns all needed entretiens info for a candidature to flask app
 @app.route('/entretiens/<int:id_candidature>')

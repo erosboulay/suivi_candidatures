@@ -215,10 +215,7 @@ dropdown_filters.forEach(filter => {
             filter.querySelector(".filter-dropdown").classList.add('hidden');
         })
         
-        if (close_current_filter){
-            filter.querySelector(".filter-dropdown").classList.add('hidden');
-        }
-        else if (!filter.querySelector(".filter").classList.contains("filter-applied")){
+        if (!close_current_filter && !filter.querySelector(".filter").classList.contains("filter-applied")){
             filter.querySelector(".filter-dropdown").classList.remove('hidden');
         }
     })
