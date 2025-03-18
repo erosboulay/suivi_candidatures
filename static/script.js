@@ -209,8 +209,17 @@ console.log(dropdown_filters);
 dropdown_filters.forEach(filter => {
     filter.addEventListener('click', () => {
         console.log(filter.querySelector(".filter-dropdown"));
-        if (filter.querySelector(".material-symbols-outlined").textContent !== "close_small"){
-            filter.querySelector(".filter-dropdown").classList.toggle('hidden');
+        const close_current_filter = !filter.querySelector(".filter-dropdown").classList.contains('hidden');
+
+        dropdown_filters.forEach(filter => {
+            filter.querySelector(".filter-dropdown").classList.add('hidden');
+        })
+        
+        if (close_current_filter){
+            filter.querySelector(".filter-dropdown").classList.add('hidden');
+        }
+        else{
+            filter.querySelector(".filter-dropdown").classList.remove('hidden');
         }
     })
 
@@ -218,6 +227,9 @@ dropdown_filters.forEach(filter => {
 
 // Click filter
 document.querySelector(".filter-click").addEventListener('click', () => {
+    dropdown_filters.forEach(filter => {
+        filter.querySelector(".filter-dropdown").classList.add('hidden');
+    })
     document.querySelector(".filter-click").classList.toggle('filter-applied');
     if (document.querySelector(".filter-click").classList.contains('filter-applied')) {
         filterCandidatureSpontanee();
