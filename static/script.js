@@ -218,7 +218,7 @@ dropdown_filters.forEach(filter => {
         if (close_current_filter){
             filter.querySelector(".filter-dropdown").classList.add('hidden');
         }
-        else{
+        else if (!filter.querySelector(".filter").classList.contains("filter-applied")){
             filter.querySelector(".filter-dropdown").classList.remove('hidden');
         }
     })
@@ -277,6 +277,10 @@ document.querySelectorAll(".has-dropdown").forEach( dropdown => {
             text_node.textContent = text;
             dropdown.querySelector(".material-symbols-outlined").textContent = "arrow_drop_down";   
             dropdown.querySelector(".filter").classList.remove("filter-applied")
+
+            dropdown_filters.forEach(filter => {
+                filter.querySelector(".filter-dropdown").classList.add('hidden');
+            })
 
             activeFilters[text] = null;
             removeFilter();
@@ -377,28 +381,38 @@ function removeFilterCandidatureSpontanee() {
 
 // drop down filter functions (Statut)
 function applyFilter(filter){
-    var boxes = document.querySelectorAll(".item-box");
+    let boxes = document.querySelectorAll(".item-box");
+    let nb_boxes = 0;
 
     boxes.forEach(box => {
         if (hideBox(box, filter)){
             box.classList.add('hidden');
         }
+        if (!box.classList.contains('hidden')){
+            nb_boxes ++;
+        }
     });
 
     console.log(`Applied ${filter} Filter`)
-    const box = selectFirstBox();        
+    const box = selectFirstBox();     
+    document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`
     updateBox(box);
 }
 
 function removeFilter(){
     var boxes = document.querySelectorAll(".item-box");
+    let nb_boxes = 0;
 
     boxes.forEach(box => {
         if (showBox(box)) {
             box.classList.remove('hidden');
         }
+        if (!box.classList.contains('hidden')){
+            nb_boxes ++;
+        }
     });
 
-    const box = selectFirstBox();        
+    const box = selectFirstBox();
+    document.querySelector("#nb-res").textContent = `${nb_boxes} résultats`        
     updateBox(box);
 }
