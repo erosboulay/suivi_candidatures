@@ -307,7 +307,11 @@ function showBox(box){
         const date_demande = parseDate(box.getAttribute("data-dernier-maj"));
         return !isDateWithinPeriod(date_demande, "Dernière MàJ");
     }
-
+    if (activeFilters["Source"] !== null){
+        if (box.getAttribute("data-source") !== activeFilters["Source"]){
+            return false;
+        }
+    }
     return true;
 }
 
@@ -322,6 +326,9 @@ function hideBox(box, filter){
     else if (filter == "Dernière MàJ"){
         const date_maj = parseDate(box.getAttribute("data-dernier-maj"));
         return isDateWithinPeriod(date_maj, filter);
+    }
+    else if (filter == "Source"){
+        return box.getAttribute("data-source") !== activeFilters.Source;
     }
 }
 
