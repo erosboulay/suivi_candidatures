@@ -8,7 +8,8 @@ const ordre_boxes = document.querySelectorAll('.ordre');
 // Filters
 const activeFilters = {
     "Candidature spontanée": false,
-    "Statut": null
+    "Statut": null,
+    "Date": null
 };
 
 document.addEventListener('click', () => {
@@ -244,7 +245,7 @@ document.querySelectorAll(".has-dropdown").forEach( has_dropdown => {
             const filter = has_dropdown.querySelector(".filter-text").getAttribute("data-filter-name");
 
             activeFilters[filter] = child.textContent.trim();    
-            applyFilter();
+            applyFilter(filter);
 
         })
     })
@@ -285,8 +286,47 @@ function showBox(box){
             return false;
         }
     }
+    if (activeFilters["Date"] !== null) {
+        const date_demande = parseDate(box.getAttribute("data-date-demande"));
+        const date_today = Date.now();
+        const diffTime = Math.abs(date_today - date_demande);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
+        if (activeFilters.Date === "7 derniers jours" && diffDays >= 7){
+            return false;
+        }
+        else if (activeFilters.Date === "Plus de 14 jours" && diffDays <= 14){
+            return false;
+        }
+        else if (activeFilters.Date === "Plus de 30 jours" && diffDays <= 30){
+            return false;
+        }
+    }
     return true;
+}
+
+function hideBox(box, filter){
+    if (filter == "Statut"){
+        return box.querySelector(".status-icon").textContent.trim() !== activeFilters.Statut;
+    }
+    else if (filter == "Date"){
+        const date_demande = parseDate(box.getAttribute("data-date-demande"));
+        const date_today = Date.now();
+        const diffTime = Math.abs(date_today - date_demande);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+        console.log(`diffDays: ${diffDays}`)
+
+        if (activeFilters[filter] === "7 derniers jours"){
+            return diffDays >= 7;
+        }
+        else if (activeFilters[filter] === "Plus de 14 jours"){
+            return diffDays <= 14;
+        }
+        else if (activeFilters[filter] === "Plus de 30 jours"){
+            return diffDays <= 30;
+        }
+    }
 }
 
 // onclick filter functions (Candidature Spontanée)
@@ -320,18 +360,16 @@ function removeFilterCandidatureSpontanee() {
 }
 
 // drop down filter functions (Statut)
-function applyFilter(){
+function applyFilter(filter){
     var boxes = Array.from(document.querySelectorAll(".item-box"));
 
-    console.log(`Statut: ${activeFilters.Statut}`)
-
     boxes.forEach(box => {
-        if (box.querySelector(".status-icon").textContent.trim() !== activeFilters.Statut) {
-                box.classList.add('hidden');
+        if (hideBox(box, filter)){
+            box.classList.add('hidden');
         }
     });
 
-    console.log(`Applied Status Filter`)
+    console.log(`Applied ${filter} Filter`)
     const box = selectFirstBox();        
     updateBox(box);
 }
