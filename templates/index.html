@@ -30,7 +30,16 @@
             {% endfor %}
         </div>
     </div>
-    <div class = "filter">Entreprise<span class="material-symbols-outlined">arrow_drop_down</span></div>
+    <div class = "has-dropdown">
+        <div class = "filter">
+            <div class = "filter-text" data-filter-name = "Entreprise">Entreprise</div><span class="material-symbols-outlined">arrow_drop_down</span>
+        </div>
+        <div class = "filter-dropdown hidden">
+            {% for entreprise in entreprises %}
+            <div class = "filter-option">{{entreprise}}</div>
+            {% endfor %}
+        </div>
+    </div>
     <div class = "filter filter-click">Candidature spontanée</div>
     <div class = "has-dropdown">
         <div class = "filter">
@@ -83,6 +92,7 @@
                 data-poste-url = "{{ candidature.lien_candidature }}"
                 data-source = "{{candidature.source}}"
                 data-ville = "{{candidature.ville}}"
+                data-entreprise = "{{candidature.entreprise}}"
                 >
                 <div class = "item-box-title">
                     <span class = "nom-poste"> 

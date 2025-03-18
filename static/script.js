@@ -328,6 +328,11 @@ function showBox(box){
             return false;
         }
     }
+    if (activeFilters["Entreprise"] !== null){
+        if (box.getAttribute("data-entreprise") !== activeFilters["Entreprise"]){
+            return false;
+        }
+    }
     return true;
 }
 
@@ -348,6 +353,9 @@ function hideBox(box, filter){
     }
     else if (filter == "Ville"){
         return box.getAttribute("data-ville") !==  activeFilters.Ville;
+    }
+    else if (filter == "Entreprise"){
+        return box.getAttribute("data-entreprise") !== activeFilters.Entreprise;
     }
 }
 

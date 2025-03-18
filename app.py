@@ -51,7 +51,8 @@ def index():
         stmt = select(Candidature).order_by(Candidature.c.date_demande.desc())
         stmt2 = select(func.count(Candidature.c.id))
         stmt3 = select(distinct(Candidature.c.source)).order_by(Candidature.c.source.asc())
-        stmt4 = select(distinct(Candidature.c.ville)).order_by(Candidature.c.source.asc())
+        stmt4 = select(distinct(Candidature.c.ville)).order_by(Candidature.c.ville.asc())
+        stmt5 = select(distinct(Candidature.c.entreprise)).order_by(Candidature.c.entreprise.asc())
 
         candidatures = session.execute(stmt).all()
         candidatures_dict = [
@@ -73,8 +74,14 @@ def index():
         nmb_c = session.execute(stmt2).scalar()
         sources = session.execute(stmt3).scalars().all()
         villes = session.execute(stmt4).scalars().all()
+        entreprises = session.execute(stmt5).scalars().all()
 
-        return render_template("index.html", candidatures = candidatures_dict, sources = sources, villes = villes, nmb_c = nmb_c)
+        return render_template("index.html", 
+                               candidatures = candidatures_dict, 
+                               sources = sources, 
+                               villes = villes, 
+                               entreprises = entreprises,
+                               nmb_c = nmb_c)
 
 # returns all needed entretiens info for a candidature to flask app
 @app.route('/entretiens/<int:id_candidature>')
