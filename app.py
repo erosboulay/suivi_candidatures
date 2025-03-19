@@ -101,4 +101,4 @@ def get_reponses(id_candidature):
 
 if __name__ == '__main__':
     metadata_obj.create_all(engine)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

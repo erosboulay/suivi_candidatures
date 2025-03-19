@@ -473,7 +473,7 @@ function removeFilter(){
 // Search input
 //filter
 const search_bar = document.querySelector("input[type='search']")
-search_bar.addEventListener('search', () => {
+search_bar.addEventListener('input', () => {
     const searchTerm = normalizeText(search_bar.value);
     console.log(`search term is :${searchTerm}`)
     const boxes = document.querySelectorAll(".item-box");

@@ -75,6 +75,10 @@ body{
     user-select: none;
 }
 
+#add-icon{
+    cursor: pointer;
+}
+
 /* Filters */
 
 #filter-box{
@@ -140,7 +144,7 @@ body{
     z-index: 1;
 
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .filter-option{
