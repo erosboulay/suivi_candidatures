@@ -513,3 +513,16 @@ search_bar.addEventListener('input', () => {
 function normalizeText(text){
     return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
+// Add candidature
+
+const add_ui = document.querySelector(".add-ui")
+
+document.querySelector("#add-icon").addEventListener('click', () => {
+    add_ui.classList.add("fade-in");
+})
+
+document.querySelector(".cancel-button").addEventListener('click', () => {
+    add_ui.classList.remove("fade-in");
+    add_ui.querySelector("#add-main-block").scrollTop = 0;
+})

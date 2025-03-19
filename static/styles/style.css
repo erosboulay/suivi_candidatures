@@ -395,6 +395,20 @@ a:hover {
 
 /* UI for adding a candidature */
 
+.add-ui{
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+
 #mask {
     position: fixed; /* Ensures it covers the entire viewport */
     top: 0;
@@ -509,6 +523,7 @@ a:hover {
 }
 
 .cancel-button{
+    
     display: flex;
     padding: 10px;
     justify-content: center;
@@ -521,4 +536,12 @@ a:hover {
     font-family: Outfit;
     font-size: 24px;
     font-weight: 550;
+
+    user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+
+    cursor: pointer;
 }
