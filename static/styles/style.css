@@ -392,3 +392,133 @@ a:hover {
 .hidden {
     display: none;
   }
+
+/* UI for adding a candidature */
+
+#mask {
+    position: fixed; /* Ensures it covers the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent black background */
+    z-index: 2; /* Ensure it appears above other elements */
+}
+
+#add-container{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    height: 512px ;
+    width: 676px;
+    margin-top: -10px;
+    margin-left: -338px; /* Negative half of width. */
+    background-color: white;
+    z-index: 2;
+    border-radius: 20px;
+}
+
+
+#add-header{
+    height: 90px;
+    background-color: white;
+    border-radius: 20px 20px 0px 0px;
+    padding: 0px 40px;
+    display: flex;
+}
+
+#add-header-title{
+    height: 100%;
+    width: 100%;
+    align-content: center;
+
+    font-family: Outfit;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 2px solid #777;
+}
+
+#add-main-block{
+    margin: 0px 40px;
+    height: 332px;
+    background-color: white;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.add-main-subblock{
+    align-content: center;
+    width: 100%;
+    height: 130px;
+    padding-left: 1px;
+    padding-right: 10px;
+}
+
+.add-input{
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border-width:  1px;
+    border-style: solid;
+    padding: 5px;
+    overflow-x: visible;
+}
+
+.add-input:focus {
+    outline: 1px solid #333; /* Adds a visible outline for better focus indication */
+}
+
+#add-end-text{
+    margin-top: 5px;
+    text-align: center;
+    width: 100%;
+    font-family: Outfit;
+    font-size: 20px;
+    font-weight: 600;
+    color:#555;
+}
+
+#add-footer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    background-color: white;
+    height: 90px;
+    border-radius: 0px 0px 20px 20px;
+    box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.10);
+    padding: 20px;
+    gap: 10px;
+}
+
+.add-button{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 5px;
+    background: #FFCAD4;
+
+    font-family: Outfit;
+    font-size: 24px;
+    font-weight: 550;
+}
+
+.cancel-button{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 5px;
+    background: #DBD9E1;
+    
+    font-family: Outfit;
+    font-size: 24px;
+    font-weight: 550;
+}
