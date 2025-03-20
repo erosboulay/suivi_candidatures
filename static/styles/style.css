@@ -394,7 +394,7 @@ a:hover {
 /* for filtering */
 
 .hidden {
-    display: none;
+    display: none !important;
   }
 
 /* UI for adding a candidature */
@@ -512,7 +512,7 @@ a:hover {
     gap: 10px;
 }
 
-.add-button{
+.add-button, .edit-button{
     display: flex;
     padding: 10px;
     justify-content: center;

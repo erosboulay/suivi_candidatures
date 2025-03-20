@@ -533,8 +533,19 @@ const inputs = document.querySelector("#add-main-block").querySelectorAll(".add-
 
 
 document.querySelector("#add-icon").addEventListener('click', () => {
-    add_ui.querySelector("#add-header-title").textContent = "Ajouter une candidature";
-    add_ui.querySelector(".add-button").textContent = "Ajouter"
+
+
+    const day = new Date();
+    const year = day.getFullYear();
+    const month = String(day.getMonth() + 1).padStart(2, '0'); // month 0-11 ➜ 1-12
+    const date = String(day.getDate()).padStart(2, '0');       // day of month 1-31
+
+    const today = `${year}-${month}-${date}`;
+
+    console.log(`today: ${today}`);
+    const dateInput = document.querySelector("input[type='date']");
+    dateInput.value = today; // Set the default value to today's date
+
     add_ui.classList.add("fade-in");
     document.querySelector("body").classList.add("no-scroll");
 })
@@ -546,6 +557,10 @@ document.querySelector(".cancel-button").addEventListener('click', () => {
     inputs.forEach( input => {
         input.value = null;
     })
+
+    document.querySelector(".add-button").classList.remove("hidden");
+    document.querySelector(".edit-button").classList.add("hidden");
+
     const error_div = document.querySelector("#add-error")
     error_div.classList.add("hidden")
 })
@@ -625,7 +640,16 @@ document.querySelector("#crud-edit").addEventListener('click', () => {
     inputs[0].value = box.getAttribute("data-entreprise");
     inputs[1].value = box.getAttribute("data-poste-url");
     inputs[2].value = box.getAttribute("data-source");
-    inputs[3].value = box.getAttribute("data-date-demande");
+
+    const dateStr = box.getAttribute("data-date-demande");
+    let [day, month, year] = dateStr.split('/').map(Number);
+    month = String(month).padStart(2, '0'); 
+    day = String(day).padStart(2, '0');    
+    const date = `${year}-${month}-${day}`;
+    console.log(`date : ${date}`)
+
+    inputs[3].value = date;
+
     const poste = box.querySelector(".nom-poste").textContent;
     if (poste == "Candidature Spontanée"){
         inputs[4].value = "";
@@ -637,12 +661,68 @@ document.querySelector("#crud-edit").addEventListener('click', () => {
     inputs[6].value = box.getAttribute("data-ville");
     inputs[7].value = box.querySelector(".status-icon").textContent;
 
-
-
-
-    add_ui.querySelector("#add-header-title").textContent = "Éditer une candidature";
-    add_ui.querySelector(".add-button").textContent = "Éditer"
+    document.querySelector(".add-button").classList.add("hidden");
+    document.querySelector(".edit-button").classList.remove("hidden");
+    
     add_ui.classList.add("fade-in");
     document.querySelector("body").classList.add("no-scroll");
 
+})
+
+document.querySelector(".edit-button").addEventListener('click', (event) => {
+    event.preventDefault() 
+    let erreur = false;
+    const erreurs_array = [];
+
+    inputs.forEach( input => {
+        let text = input.parentElement.firstElementChild.textContent
+        if (text.includes("*")){
+            if (!input.value){
+                console.log("Problème input")
+                erreurs_array.push(text.slice(0, -1));
+                erreur = true;
+            }
+        }
+        if (!input.value || input.value.trim() === "") {
+            input.value = null;
+        }
+        console.log(`input value ${input.value}`);
+    })
+
+    console.log(erreurs_array);
+
+    if (erreurs_array.length == 0){
+        const data = new FormData();
+        data.append("Entreprise", inputs[0].value);
+        data.append("Lien candidature", inputs[1].value);
+        data.append("Source", inputs[2].value);
+        data.append("Date de demande", inputs[3].value);
+        data.append("Poste", inputs[4].value);
+        data.append("Pays", inputs[5].value);
+        data.append("Ville", inputs[6].value);
+        data.append("Statut", inputs[7].value);
+
+        const box = document.querySelector(".pressed")
+        const id = box.getAttribute("data-candi-id");
+        console.log(`id = ${id}`)
+        data.append("ID", id);
+
+        fetch("edit_candidature", {
+            "method": "POST",
+            "body": data,
+        }).then(() => {
+            window.location.reload(); 
+        })
+    }
+    else{
+        const error_div = document.querySelector("#add-error")
+        let nouv_text = `Il faut remplir: `
+        erreurs_array.forEach(erreur => {
+            nouv_text += ` ${erreur},`
+        })
+        error_div.textContent = nouv_text.slice(0, -1);
+        error_div.classList.remove("hidden");
+    }
+
+    
 })
