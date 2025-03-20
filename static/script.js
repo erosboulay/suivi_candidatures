@@ -526,3 +526,71 @@ document.querySelector(".cancel-button").addEventListener('click', () => {
     add_ui.classList.remove("fade-in");
     add_ui.querySelector("#add-main-block").scrollTop = 0;
 })
+
+document.querySelector(".add-button").addEventListener('click', () => {
+    const inputs = document.querySelector("#add-main-block").querySelectorAll(".add-input");
+
+    let erreur = false;
+    const erreurs_array = [];
+
+    inputs.forEach( input => {
+        let text = input.parentElement.firstElementChild.textContent
+        if (text.includes("*")){
+            if (!input.value){
+                console.log("Problème input")
+                erreurs_array.push(text.slice(0, -1));
+                erreur = true;
+            }
+        }
+        if (!input.value || input.value.trim() === "") {
+            input.value = null;
+        }
+        console.log(`input value ${input.value}`);
+    })
+
+
+    console.log(erreurs_array);
+
+    if (erreurs_array.length == 0){
+        const data = new FormData();
+        data.append("Entreprise", inputs[0].value);
+        data.append("Lien candidature", inputs[1].value);
+        data.append("Source", inputs[2].value);
+        data.append("Date de demande", inputs[3].value);
+        data.append("Poste", inputs[4].value);
+        data.append("Pays", inputs[5].value);
+        data.append("Ville", inputs[6].value);
+        data.append("Statut", inputs[7].value);
+
+        fetch("add_candidature", {
+            "method": "POST",
+            "body": data,
+        }).then(() => {
+            window.location.reload(); 
+        })
+    }
+    else{
+        const error_div = document.querySelector("#add-error")
+        let nouv_text = `Il faut remplir: `
+        erreurs_array.forEach(erreur => {
+            nouv_text += ` ${erreur},`
+        })
+        error_div.textContent = nouv_text.slice(0, -1);
+        error_div.classList.remove("hidden");
+    }
+
+    
+})
+
+document.querySelector("#crud-delete").addEventListener('click', () => {
+    const data = new FormData();
+    const id = document.querySelector(".pressed").getAttribute("data-candi-id");
+    data.append("ID", id);
+
+    fetch("delete_candidature", {
+        "method": "POST",
+        "body": data,
+    }).then(() => {
+        window.location.reload(); 
+    })
+})

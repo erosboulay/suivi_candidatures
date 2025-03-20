@@ -7,12 +7,12 @@
     <div id = "mask"></div>
     <div id = "add-container">
         <div id = "add-header"> <span id = "add-header-title"> Ajouter une candidature  </span> </div>
-        <div id = "add-main-block">
-            
+        <div id = "add-error" class = "hidden"> Il faut remplir: Entreprise, Lien candidature, Source, Date de demande</div>
+        <div id = "add-main-block">            
             <div class = "add-main-subblock">
                 <div class = "vertical-align" >
                     <div class = "add-item-title">Entreprise*</div>
-                    <input class = "add-input">
+                    <input class = "add-input" type="text">
                 </div>
             </div>
             <div class = "add-main-subblock">
@@ -25,6 +25,12 @@
                 <div class = "vertical-align">
                     <div class = "add-item-title">Source*</div>
                     <input class = "add-input">
+                </div>
+            </div>
+            <div class = "add-main-subblock">
+                <div class = "vertical-align">
+                    <div class = "add-item-title">Date de demande*</div>
+                    <input type="date" value = "{{date_today}}" class = "add-input">
                 </div>
             </div>
             <div class = "add-main-subblock">
@@ -47,14 +53,13 @@
             </div>
             <div class = "add-main-subblock">
                 <div class = "vertical-align">
-                    <div class = "add-item-title">Date de demande</div>
-                    <input class = "add-input">
-                </div>
-            </div>
-            <div class = "add-main-subblock">
-                <div class = "vertical-align">
                     <div class = "add-item-title">Statut</div>
-                    <input class = "add-input">
+                    <select class = "add-input">
+                        <option>En attente</option>
+                        <option>Entretien</option>
+                        <option>Accepté</option>
+                        <option>Regusé</option>
+                      </select>
                 </div>
             </div>
             <div id = "add-end-text">C'est fait ! Relire et soumettre</div>
@@ -167,7 +172,8 @@
                     </span><br/>
                 </div>
                 
-                <div class = "details">{{ candidature.entreprise }} | {{candidature.ville}} - {{candidature.pays}}</div>
+                <div class = "details">{{ candidature.entreprise }}
+                     | {{candidature.ville}} - {{candidature.pays}}</div>
                 <div class = "status-icon 
                     {% if candidature.statut == 'Accepté' %} status-green
                     {% elif candidature.statut == 'Refusé' %} status-red
@@ -183,15 +189,15 @@
     <div id = "right-box">
         <div id = "item-header">
             <div id = "item-header-subcontainer">
-                <a id = "nom-poste-emphasis" href="">Website</a><br/>
+                <a id = "nom-poste-emphasis" href=""></a><br/>
                 <div id = "details-emphasis"></div>
                 <div class = "status-icon status-grey"></div>
             </div>
             
             <div id = "crud-operations">
-                <div>[UPDATE]</div>
-                <div>[EDIT]</div>
-                <div>[DELETE]</div>
+                <div id = "crud-update">[UPDATE]</div>
+                <div id = "crud-edit">[EDIT]</div>
+                <div id = "crud-delete">[DELETE]</div>
             </div>
         </div>
         <div id = "item-content">

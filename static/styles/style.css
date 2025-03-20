@@ -371,6 +371,10 @@ a:hover {
     font-weight: 400;
 }
 
+#crud-update, #crud-edit, #crud-delete {
+    cursor: pointer;
+}
+
 #item-content{
     margin: var(--big-gap);
 }
@@ -478,6 +482,7 @@ a:hover {
     border-style: solid;
     padding: 5px;
     overflow-x: visible;
+    font-family: Outfit;
 }
 
 .add-input:focus {
@@ -516,10 +521,19 @@ a:hover {
 
     border-radius: 5px;
     background: #FFCAD4;
+    border: none;
 
     font-family: Outfit;
     font-size: 24px;
     font-weight: 550;
+
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+
+    cursor: pointer;
 }
 
 .cancel-button{
@@ -538,10 +552,16 @@ a:hover {
     font-weight: 550;
 
     user-select: none;
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 
     cursor: pointer;
+}
+
+#add-error{
+    padding: 10px 40px;
+    color: #E25A71;
+    font-size: 16px;
 }
