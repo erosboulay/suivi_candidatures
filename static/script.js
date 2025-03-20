@@ -46,9 +46,15 @@ function updateRightContainer(id_candidature) {
                 // reponses
                 console.log(reponses);
                 if (reponses.length != 0) {
-                    right_container.querySelector('#reponse-emphasis').textContent = "Réponses de l’entreprise: ";
+                    right_container.querySelector('#reponse-emphasis').textContent = "Réponses de l’entreprise";
                     reponses.forEach(resp => {
-                        right_container.querySelector('#reponse-emphasis').innerHTML += `<br> &bull;${resp.date}: ${resp.contenu}`;
+                        right_container.querySelector('#reponse-emphasis').innerHTML += 
+                        `<br>
+                        <div>
+                            &bull;${resp.date}: ${resp.contenu}
+                            <span class = "edit-reponse">[EDIT]</span>
+                            <span class = "delete-reponse">[DELETE]</span>
+                        </div>`;
                     });
                 }
                 else {
@@ -59,9 +65,15 @@ function updateRightContainer(id_candidature) {
                 //entretiens
                 if (entretiens.length !== 0) {
                     console.log(entretiens);
-                    right_container.querySelector('#entretien-emphasis').textContent = "Entretiens: ";
+                    right_container.querySelector('#entretien-emphasis').textContent = "Entretiens";
                     entretiens.forEach(entretien => {
-                        right_container.querySelector('#entretien-emphasis').innerHTML += `<br> &bull;${entretien.date}: ${entretien.type}`;
+                        right_container.querySelector('#entretien-emphasis').innerHTML += 
+                        `<br>
+                        <div>
+                            &bull;${entretien.date}: ${entretien.type}
+                            <span class = "edit-reponse">[EDIT]</span>
+                            <span class = "delete-reponse">[DELETE]</span>
+                        </div>`;
                     }
                     );
                 }
@@ -517,19 +529,28 @@ function normalizeText(text){
 // Add candidature
 
 const add_ui = document.querySelector(".add-ui")
+const inputs = document.querySelector("#add-main-block").querySelectorAll(".add-input");
+
 
 document.querySelector("#add-icon").addEventListener('click', () => {
+    add_ui.querySelector("#add-header-title").textContent = "Ajouter une candidature";
+    add_ui.querySelector(".add-button").textContent = "Ajouter"
     add_ui.classList.add("fade-in");
+    document.querySelector("body").classList.add("no-scroll");
 })
 
 document.querySelector(".cancel-button").addEventListener('click', () => {
     add_ui.classList.remove("fade-in");
+    document.querySelector("body").classList.remove("no-scroll");
     add_ui.querySelector("#add-main-block").scrollTop = 0;
+    inputs.forEach( input => {
+        input.value = null;
+    })
+    const error_div = document.querySelector("#add-error")
+    error_div.classList.add("hidden")
 })
 
 document.querySelector(".add-button").addEventListener('click', () => {
-    const inputs = document.querySelector("#add-main-block").querySelectorAll(".add-input");
-
     let erreur = false;
     const erreurs_array = [];
 
@@ -593,4 +614,35 @@ document.querySelector("#crud-delete").addEventListener('click', () => {
     }).then(() => {
         window.location.reload(); 
     })
+})
+
+document.querySelector("#crud-edit").addEventListener('click', () => {
+    const data = new FormData();
+    const box = document.querySelector(".pressed")
+    const id = box.getAttribute("data-candi-id");
+    data.append("ID", id);
+
+    inputs[0].value = box.getAttribute("data-entreprise");
+    inputs[1].value = box.getAttribute("data-poste-url");
+    inputs[2].value = box.getAttribute("data-source");
+    inputs[3].value = box.getAttribute("data-date-demande");
+    const poste = box.querySelector(".nom-poste").textContent;
+    if (poste == "Candidature Spontanée"){
+        inputs[4].value = "";
+    }
+    else{
+        inputs[4].value = poste.trim();
+    }
+    inputs[5].value = box.getAttribute("data-pays");
+    inputs[6].value = box.getAttribute("data-ville");
+    inputs[7].value = box.querySelector(".status-icon").textContent;
+
+
+
+
+    add_ui.querySelector("#add-header-title").textContent = "Éditer une candidature";
+    add_ui.querySelector(".add-button").textContent = "Éditer"
+    add_ui.classList.add("fade-in");
+    document.querySelector("body").classList.add("no-scroll");
+
 })

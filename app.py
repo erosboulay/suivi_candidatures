@@ -115,7 +115,7 @@ def add_candidature():
     date_demande_str = request.form.get('Date de demande')
     date_demande = datetime.strptime(date_demande_str, "%Y-%m-%d").date() if date_demande_str else None
     statut = request.form.get('Statut').capitalize()
-    candidature_spontanee = poste == ""
+    candidature_spontanee = poste == None
 
     with Session(engine) as session:
         stmt = insert(Candidature).values(

@@ -371,7 +371,7 @@ a:hover {
     font-weight: 400;
 }
 
-#crud-update, #crud-edit, #crud-delete {
+#crud-edit, #crud-delete, #crud-update {
     cursor: pointer;
 }
 
@@ -564,4 +564,12 @@ a:hover {
     padding: 10px 40px;
     color: #E25A71;
     font-size: 16px;
+}
+
+.no-scroll{
+    overflow: hidden;
+}
+
+.edit-reponse, .delete-reponse{
+    color: #999;
 }
