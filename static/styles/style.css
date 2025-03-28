@@ -296,11 +296,12 @@ body{
     width: 625px;
     height: auto;
     min-height: 400px;
-    max-height: 60vh;
+    max-height: 55vh;
     background-color: white;
     border-radius: 10px;
     border: 1px solid #bbb;
     margin: 20px 0px;
+    margin-bottom: 20px;
 }
 
 #right-box, #item-header , #nom-poste-emphasis{
@@ -377,14 +378,7 @@ a:hover {
 
 #item-content{
     margin: var(--big-gap);
-}
-
-#item-content, #item-content * {
-    font-family: VT323;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    overflow-y: auto;
 }
 
 #item-content li {
@@ -570,6 +564,100 @@ a:hover {
     overflow: hidden;
 }
 
-.edit-reponse, .delete-reponse{
-    color: #999;
+/* UI pour réponses, entretiens et leurs ajout/édition/suppression */
+
+.vt323-20{
+    font-family: VT323;
+    font-size: 20px;
+}
+
+#item-liste-reponses, #item-liste-entretiens {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.item-reponse, .item-entretien {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.item-reponse-contenu, .item-entretien-contenu {
+    min-width: 60%;
+    clear: both;
+    margin-left: 5px;
+    font-family: VT323;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    word-wrap: break-word; 
+    padding: 4px;
+}
+
+.item-reponse-date, .item-entretien-date{
+    font-family: VT323;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-right: 4px;
+
+    padding: 4px;
+}
+
+.list-dot{
+    display: inline-block;
+    border-radius: 3px;
+    background: #000;
+    margin: 14px;
+    margin-right: 15px;
+    padding: 4px;
+}
+
+.bg-grey{
+    background-color: #DDDDDD;
+}
+
+.item-reponse .material-symbols-outlined, 
+.item-entretien .material-symbols-outlined {
+    position: relative;
+    padding: 4px;
+    color: black ;
+    margin-right: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.item-reponse .material-symbols-outlined::after,
+.item-entretien .material-symbols-outlined::after {
+    content: ''; /* This is required for the pseudo-element to appear */
+    position: absolute; /* Position it over the parent div */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5); 
+    z-index: 100;
+    border-radius: 18px;
+    
+    opacity: 0; /* Initially, the overlay is invisible */
+    visibility: hidden; /* Initially, the overlay is hidden */
+  }
+  
+  /* When the class 'visible' is added, the overlay becomes visible */
+.material-symbols-outlined.visible::after {
+    opacity: 1;
+    visibility: visible;
+  }
+
+#date-postule-emphasis, #item-content-placeholder {
+    font-family: VT323;
+    font-weight: 400;
 }

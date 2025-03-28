@@ -41,51 +41,54 @@ function updateRightContainer(id_candidature) {
             // date
             console.log(date);
             right_container.querySelector('#date-postule-emphasis').textContent = `Postulé le : ${date}`;
+            right_container.querySelector('#item-liste-reponses').innerHTML = "";
+            right_container.querySelector('#item-liste-entretiens').innerHTML = "";
+            right_container.querySelector('#item-content-placeholder').textContent = "";
+
 
             if (reponses.length !== 0 || entretiens.length !== 0) {
                 // reponses
                 console.log(reponses);
                 if (reponses.length != 0) {
-                    right_container.querySelector('#reponse-emphasis').textContent = "Réponses de l’entreprise";
+                    const conteneur_reponses = right_container.querySelector('#item-liste-reponses');
+                    conteneur_reponses.innerHTML += '<div class = "vt323-20">Réponses de l’entreprise:</div>';
+
                     reponses.forEach(resp => {
-                        right_container.querySelector('#reponse-emphasis').innerHTML += 
-                        `<br>
-                        <div>
-                            &bull;${resp.date}: ${resp.contenu}
-                            <span class = "edit-reponse">[EDIT]</span>
-                            <span class = "delete-reponse">[DELETE]</span>
-                        </div>`;
+                        const html = `
+                        <div class = "item-reponse">
+                            <span class = "list-dot"></span>
+                            <span class="material-symbols-outlined hidden">close</span>
+                            <span class = "item-reponse-date" contenteditable = "true">${resp.date}</span>: <br>
+                            <span class = "item-reponse-contenu"  contenteditable = "true">${resp.contenu}</span>
+                        </div>
+                        `
+                        conteneur_reponses.innerHTML += html;
+
                     });
                 }
-                else {
-                    right_container.querySelector('#reponse-emphasis').textContent = "";
-                }
-
 
                 //entretiens
                 if (entretiens.length !== 0) {
                     console.log(entretiens);
-                    right_container.querySelector('#entretien-emphasis').textContent = "Entretiens";
+                    const conteneur_reponses = right_container.querySelector('#item-liste-entretiens');
+                    conteneur_reponses.innerHTML += '<div class = "vt323-20">Entretiens:</div>';
                     entretiens.forEach(entretien => {
-                        right_container.querySelector('#entretien-emphasis').innerHTML += 
-                        `<br>
-                        <div>
-                            &bull;${entretien.date}: ${entretien.type}
-                            <span class = "edit-reponse">[EDIT]</span>
-                            <span class = "delete-reponse">[DELETE]</span>
-                        </div>`;
+                        const html = `
+                        <div class = "item-entretien">
+                            <span class = "list-dot"></span>
+                            <span class="material-symbols-outlined hidden">close</span>
+                            <span class = "item-entretien-date">${entretien.date}</span>:
+                            <span class = "item-entretien-contenu">${entretien.type}</span>
+                        </div>
+                        `
+                        conteneur_reponses.innerHTML += html;
                     }
                     );
-                }
-                else {
-                    right_container.querySelector('#entretien-emphasis').textContent = "";
                 }
 
             }
             else {
-                right_container.querySelector('#reponse-emphasis').textContent = "y a quelqu'un? non? just moi... ok"; // TODO: make random fun text
-                right_container.querySelector('#entretien-emphasis').textContent = "";
-
+                right_container.querySelector('#item-content-placeholder').textContent = "y a quelqu'un? non? just moi... ok"; // TODO: make random fun text
             }
 
         });
@@ -726,3 +729,43 @@ document.querySelector(".edit-button").addEventListener('click', (event) => {
 
     
 })
+
+// for adding, editing and deleting reponses and entretiens
+
+document.querySelector("#item-content").addEventListener("mouseover", (event) => {
+    const span_item = event.target.closest(".item-reponse, .item-entretien");
+    if (!span_item) return;
+
+    span_item.querySelector(".material-symbols-outlined")?.classList.remove("hidden");
+    span_item.querySelector(".list-dot")?.classList.add("hidden");
+    span_item.classList.add("bg-grey");
+
+    const cross = span_item.querySelector(".material-symbols-outlined");
+
+    cross.addEventListener("mouseenter", () => {
+        cross.classList.add("visible");
+    })
+
+    cross.addEventListener("mouseleave", () => {
+        cross.classList.remove("visible");
+    })
+});
+
+document.querySelector("#item-content").addEventListener("mouseout", (event) => {
+    const span_item = event.target.closest(".item-reponse, .item-entretien");
+    if (!span_item) return;
+
+    span_item.querySelector(".material-symbols-outlined")?.classList.add("hidden");
+    span_item.querySelector(".list-dot")?.classList.remove("hidden");
+    span_item.classList.remove("bg-grey");
+
+    const cross = span_item.querySelector(".material-symbols-outlined");
+    
+    cross.addEventListener("mouseenter", () => {
+        cross.classList.add("visible");
+    })
+
+    cross.addEventListener("mouseleave", () => {
+        cross.classList.remove("visible");
+    })
+});
