@@ -726,3 +726,14 @@ document.querySelector(".edit-button").addEventListener('click', (event) => {
 
     
 })
+
+// For editing and updating updates
+const edit_update_container = document.querySelector("#edit-update-container");
+edit_update_container.querySelector("#edit-update-button").addEventListener('click', () => {
+    right_container.classList.toggle("overlay");
+    edit_update_container.querySelectorAll(".edit-update-subbutton").forEach( button => {
+        button.classList.toggle("shown")
+    }
+
+    )
+})
