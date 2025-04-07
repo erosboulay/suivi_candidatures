@@ -52,8 +52,6 @@ function updateRightContainer(id_candidature) {
                         `<br>
                         <div>
                             &bull;${resp.date}: ${resp.contenu}
-                            <span class = "edit-reponse">[EDIT]</span>
-                            <span class = "delete-reponse">[DELETE]</span>
                         </div>`;
                     });
                 }
@@ -70,9 +68,7 @@ function updateRightContainer(id_candidature) {
                         right_container.querySelector('#entretien-emphasis').innerHTML += 
                         `<br>
                         <div>
-                            &bull;${entretien.date}: ${entretien.type}
-                            <span class = "edit-reponse">[EDIT]</span>
-                            <span class = "delete-reponse">[DELETE]</span>
+                            &bull; <span>${entretien.date}</span>: <span>${entretien.type}</span>
                         </div>`;
                     }
                     );
@@ -632,10 +628,7 @@ document.querySelector("#crud-delete").addEventListener('click', () => {
 })
 
 document.querySelector("#crud-edit").addEventListener('click', () => {
-    const data = new FormData();
     const box = document.querySelector(".pressed")
-    const id = box.getAttribute("data-candi-id");
-    data.append("ID", id);
 
     inputs[0].value = box.getAttribute("data-entreprise");
     inputs[1].value = box.getAttribute("data-poste-url");
@@ -730,10 +723,70 @@ document.querySelector(".edit-button").addEventListener('click', (event) => {
 // For editing and updating updates
 const edit_update_container = document.querySelector("#edit-update-container");
 edit_update_container.querySelector("#edit-update-button").addEventListener('click', () => {
-    right_container.classList.toggle("overlay");
     edit_update_container.querySelectorAll(".edit-update-subbutton").forEach( button => {
         button.classList.toggle("shown")
     }
 
     )
+})
+
+document.querySelector(".edit-update-form-cancel-button").addEventListener('click', () => {
+    close_edit_update_ui();
+})
+
+function close_edit_update_ui(){
+    document.querySelector(".edit-update-form-ui").classList.remove("fade-in")
+    document.querySelector("body").classList.remove("no-scroll");
+}
+
+// edit and updating updates (backend)
+
+// get entretien info from frontend to edit
+document.querySelector(".edit-update-subbutton.entretien").addEventListener('click', () => {
+    const inputs_entretien = document.querySelector("#entretien-emphasis").querySelectorAll("div");
+    const to_fill = document.querySelector(".edit-reponses-container");
+    const select_status = document.querySelector(".edit-update-form-main-statut select");
+    console.log(inputs_entretien);
+
+    // add statut
+    console.log(select_status)
+    const current_status = right_container.querySelector(".status-icon").textContent;
+    select_status.value = current_status;
+
+    // add entretien
+    to_fill.innerHTML = "";
+    inputs_entretien.forEach(entretien => {
+        const dateStr = entretien.firstElementChild.textContent;
+        const type = entretien.lastElementChild.textContent;
+
+        // format date
+        let [day, month, year] = dateStr.split('/').map(Number);
+        month = String(month).padStart(2, '0'); 
+        day = String(day).padStart(2, '0');    
+        const date = `${year}-${month}-${day}`;
+
+        to_fill.innerHTML += 
+            `<div class = "edit-reponses-item">
+                <input type="date" value=${date}>
+                <input type="text" value=${type}>
+                <span class="material-symbols-outlined">close</span>     
+            </div>`;
+    })
+
+    to_fill.innerHTML +=
+        `<div class = "edit-reponses-item">
+            <input type="date">
+            <input type="text">
+            <span class="material-symbols-outlined">close</span>     
+        </div>`;
+    
+    // show the edit ui
+
+    edit_update_container.querySelectorAll(".edit-update-subbutton").forEach( button => {
+        button.classList.toggle("shown")
+    })
+
+    document.querySelector(".edit-update-form-ui").classList.add("fade-in")
+    document.querySelector("body").classList.add("no-scroll");
+
 })
