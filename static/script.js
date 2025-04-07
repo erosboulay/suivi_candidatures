@@ -792,17 +792,23 @@ document.addEventListener('click', (event) => {
     const deleteButton = event.target.closest('.edit-reponses-item > span');
     
     if (deleteButton) {
-        console.log('click!!!');
         deleteButton.classList.toggle("todelete");
     }
 });
 
 document.addEventListener('click', (event) => {
-    const deleteButton = event.target.closest('.edit-reponses-item > span');
+    const addButton = event.target.closest('#edit-reponses-add-button > span');
     
-    if (deleteButton) {
-        console.log('click!!!');
-        deleteButton.classList.toggle("todelete");
+    if (addButton) {
+        console.log('click (add button)');
+        const to_fill = document.querySelector(".edit-reponses-container");
+        to_fill.innerHTML +=
+        `<div class = "edit-reponses-item">
+            <input type="date">
+            <input type="text">
+            <span class="material-symbols-outlined">close</span>     
+        </div>`;
+        
     }
 });
 
@@ -816,9 +822,15 @@ confirm_edit_entretien_button.addEventListener('click', () => {
     ls_entretiens.forEach(entretien => {
         const date = entretien.querySelector("input[type='date']").value;
         const type = entretien.querySelector("input[type='text']").value;
+        const keep = !entretien.querySelector("span").classList.contains("todelete");
 
-        const couple = new Array(date, type);
-        data.push(couple);
+        if (date != "" && type != "" && keep){ // avoid trying to add empty stuff
+            console.log("couple")
+            console.log(date)
+            console.log(type)
+            const couple = new Array(date, type);
+            data.push(couple);
+        }
     })
 
     data = JSON.stringify(data);
@@ -833,9 +845,7 @@ confirm_edit_entretien_button.addEventListener('click', () => {
         method: "POST",
         body: data,
         headers: { "Content-Type": "application/json" }
-    })
-
-    // .then((() => {
-    //    window.location.reload(); 
-    //}))
+    }).then((() => {
+        window.location.reload(); 
+    }))
 })
