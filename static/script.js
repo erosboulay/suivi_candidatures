@@ -17,10 +17,6 @@ const activeFilters = {
     "Entreprise": null
 };
 
-document.addEventListener('click', () => {
-    console.log(activeFilters);
-})
-
 // when document is loaded, make the first candidature pressed and show it in right container
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
@@ -40,7 +36,7 @@ function updateRightContainer(id_candidature) {
 
             // date
             console.log(date);
-            right_container.querySelector('#date-postule-emphasis').textContent = `Postulé le : ${date}`;
+            right_container.querySelector('#date-postule-emphasis').innerHTML = `Postulé le : ${date} <br>`;
 
             if (reponses.length !== 0 || entretiens.length !== 0) {
                 // reponses
@@ -49,8 +45,7 @@ function updateRightContainer(id_candidature) {
                     right_container.querySelector('#reponse-emphasis').textContent = "Réponses de l’entreprise";
                     reponses.forEach(resp => {
                         right_container.querySelector('#reponse-emphasis').innerHTML += 
-                        `<br>
-                        <div>
+                        `<div>
                             &bull;${resp.date}: ${resp.contenu}
                         </div>`;
                     });
@@ -63,11 +58,10 @@ function updateRightContainer(id_candidature) {
                 //entretiens
                 if (entretiens.length !== 0) {
                     console.log(entretiens);
-                    right_container.querySelector('#entretien-emphasis').textContent = "Entretiens";
+                    right_container.querySelector('#entretien-emphasis').innerHTML = "Entretiens <br>";   
                     entretiens.forEach(entretien => {
                         right_container.querySelector('#entretien-emphasis').innerHTML += 
-                        `<br>
-                        <div>
+                        `<div>
                             &bull; <span>${entretien.date}</span>: <span>${entretien.type}</span>
                         </div>`;
                     }
@@ -636,6 +630,7 @@ document.querySelector("#crud-edit").addEventListener('click', () => {
 
     const dateStr = box.getAttribute("data-date-demande");
     let [day, month, year] = dateStr.split('/').map(Number);
+    year =String(year).padStart(3, '0');
     month = String(month).padStart(2, '0'); 
     day = String(day).padStart(2, '0');    
     const date = `${year}-${month}-${day}`;
@@ -739,7 +734,6 @@ function close_edit_update_ui(){
     document.querySelector("body").classList.remove("no-scroll");
 }
 
-// edit and updating updates (backend)
 
 // get entretien info from frontend to edit
 document.querySelector(".edit-update-subbutton.entretien").addEventListener('click', () => {
@@ -761,6 +755,7 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
 
         // format date
         let [day, month, year] = dateStr.split('/').map(Number);
+        year =String(year).padStart(4, '0');
         month = String(month).padStart(2, '0'); 
         day = String(day).padStart(2, '0');    
         const date = `${year}-${month}-${day}`;
@@ -789,4 +784,58 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
     document.querySelector(".edit-update-form-ui").classList.add("fade-in")
     document.querySelector("body").classList.add("no-scroll");
 
+})
+
+// toggle whether to add, delete an entretien or not
+
+document.addEventListener('click', (event) => {
+    const deleteButton = event.target.closest('.edit-reponses-item > span');
+    
+    if (deleteButton) {
+        console.log('click!!!');
+        deleteButton.classList.toggle("todelete");
+    }
+});
+
+document.addEventListener('click', (event) => {
+    const deleteButton = event.target.closest('.edit-reponses-item > span');
+    
+    if (deleteButton) {
+        console.log('click!!!');
+        deleteButton.classList.toggle("todelete");
+    }
+});
+
+// edit and updating updates (backend)
+const confirm_edit_entretien_button = document.querySelector(".edit-update-form-add-button.entretien");
+confirm_edit_entretien_button.addEventListener('click', () => {
+    // récupérer tous les entretiens dans le form
+    let data = new Array();
+    const ls_entretiens = document.querySelectorAll(".edit-reponses-item");
+
+    ls_entretiens.forEach(entretien => {
+        const date = entretien.querySelector("input[type='date']").value;
+        const type = entretien.querySelector("input[type='text']").value;
+
+        const couple = new Array(date, type);
+        data.push(couple);
+    })
+
+    data = JSON.stringify(data);
+    //console.log(data)
+
+    // obtenir id
+    const box = document.querySelector(".pressed")
+    const id = box.getAttribute("data-candi-id");
+
+    //envoyer l'info dans le backend pour traiter et rafraichir la page
+    fetch(`edit_entretiens/${id}`, {
+        method: "POST",
+        body: data,
+        headers: { "Content-Type": "application/json" }
+    })
+
+    // .then((() => {
+    //    window.location.reload(); 
+    //}))
 })

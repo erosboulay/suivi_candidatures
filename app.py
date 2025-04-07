@@ -92,7 +92,30 @@ def get_entretiens(id_candidature):
         stmt = select(Entretien).where(Entretien.c.id_candidature == id_candidature)
         entretiens = session.execute(stmt).all()
         return jsonify([{'type': row.type, 'date' : row.date.strftime("%d/%m/%Y")} for row in entretiens])
-    
+
+@app.route('/edit_entretiens/<int:id_candidature>', methods=['POST'])
+def edit_entretiens(id_candidature):
+    # get all info
+    json_file = request.json
+    print(json_file)
+
+    # empty old info
+    with Session(engine) as session:
+        stmt = delete(Entretien).where(Entretien.c.id_candidature == id_candidature)
+        session.execute(stmt)
+
+        # add new info
+        for couple in json_file:
+            entretien_date = datetime.strptime(couple[0], "%Y-%m-%d").date()
+            entretien_type = couple[1]
+
+            stmt2 = insert(Entretien).values(id_candidature = id_candidature, date = entretien_date, type = entretien_type)
+            session.execute(stmt2)
+        
+        session.commit()
+
+    return jsonify({"message": "Candidature added successfully"}), 201
+
 # returns all needed reponses info for a candidature to flask app
 @app.route('/reponses/<int:id_candidature>')
 def get_reponses(id_candidature):
@@ -168,7 +191,6 @@ def edit_candidature():
         session.commit()
         
     return jsonify({"message": "Candidature added successfully"}), 201
-
 
 @app.route('/delete_candidature', methods=['POST'])
 def delete_candidature():
