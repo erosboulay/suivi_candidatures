@@ -46,7 +46,7 @@ function updateRightContainer(id_candidature) {
                     reponses.forEach(resp => {
                         right_container.querySelector('#reponse-emphasis').innerHTML += 
                         `<div>
-                            &bull;${resp.date}: ${resp.contenu}
+                            &bull; <span>${resp.date}</span>: <span>${resp.contenu}</span>
                         </div>`;
                     });
                 }
@@ -742,6 +742,11 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
     const select_status = document.querySelector(".edit-update-form-main-statut select");
     console.log(inputs_entretien);
 
+    // update form template for entretien
+    document.querySelector(".edit-update-form-add-button").classList.add("entretien");
+    document.querySelector(".edit-update-form-add-button").classList.remove("reponse");
+    document.querySelector("#edit-update-form-header-title").textContent = "Éditer les entretiens"
+
     // add statut
     console.log(select_status)
     const current_status = right_container.querySelector(".status-icon").textContent;
@@ -752,6 +757,8 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
     inputs_entretien.forEach(entretien => {
         const dateStr = entretien.firstElementChild.textContent;
         const type = entretien.lastElementChild.textContent;
+        console.log("type");
+        console.log(type);
 
         // format date
         let [day, month, year] = dateStr.split('/').map(Number);
@@ -762,8 +769,8 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
 
         to_fill.innerHTML += 
             `<div class = "edit-reponses-item">
-                <input type="date" value=${date}>
-                <input type="text" value=${type}>
+                <input type="date" value="${date}">
+                <input type="text" value="${type}">
                 <span class="material-symbols-outlined">close</span>     
             </div>`;
     })
@@ -786,8 +793,65 @@ document.querySelector(".edit-update-subbutton.entretien").addEventListener('cli
 
 })
 
-// toggle whether to add, delete an entretien or not
+// get reponses info from frontend to edit
+document.querySelector(".edit-update-subbutton.reponse").addEventListener('click', () => {
+    const inputs_entretien = document.querySelector("#reponse-emphasis").querySelectorAll("div");
+    const to_fill = document.querySelector(".edit-reponses-container");
+    const select_status = document.querySelector(".edit-update-form-main-statut select");
+    console.log(inputs_entretien);
 
+    // update form template for entretien
+    document.querySelector(".edit-update-form-add-button").classList.add("reponse");
+    document.querySelector(".edit-update-form-add-button").classList.remove("entretien");
+    document.querySelector("#edit-update-form-header-title").textContent = "Éditer les réponses"
+
+    // add statut
+    console.log(select_status)
+    const current_status = right_container.querySelector(".status-icon").textContent;
+    select_status.value = current_status;
+
+    // add entretien
+    to_fill.innerHTML = "";
+    inputs_entretien.forEach(entretien => {
+        const dateStr = entretien.firstElementChild.textContent;
+        const type = entretien.lastElementChild.textContent;
+        console.log("type");
+        console.log(type);
+
+        // format date
+        let [day, month, year] = dateStr.split('/').map(Number);
+        year =String(year).padStart(4, '0');
+        month = String(month).padStart(2, '0'); 
+        day = String(day).padStart(2, '0');    
+        const date = `${year}-${month}-${day}`;
+
+        to_fill.innerHTML += 
+            `<div class = "edit-reponses-item">
+                <input type="date" value="${date}">
+                <input type="text" value="${type}">
+                <span class="material-symbols-outlined">close</span>     
+            </div>`;
+    })
+
+    to_fill.innerHTML +=
+        `<div class = "edit-reponses-item">
+            <input type="date">
+            <input type="text">
+            <span class="material-symbols-outlined">close</span>     
+        </div>`;
+    
+    // show the edit ui
+
+    edit_update_container.querySelectorAll(".edit-update-subbutton").forEach( button => {
+        button.classList.remove("shown")
+    })
+
+    document.querySelector(".edit-update-form-ui").classList.add("fade-in")
+    document.querySelector("body").classList.add("no-scroll");
+
+})
+
+// toggle whether to add, delete an entretien or not
 document.addEventListener('click', (event) => {
     const deleteButton = event.target.closest('.edit-reponses-item > span');
     
@@ -813,39 +877,82 @@ document.addEventListener('click', (event) => {
 });
 
 // edit and updating updates (backend)
-const confirm_edit_entretien_button = document.querySelector(".edit-update-form-add-button.entretien");
-confirm_edit_entretien_button.addEventListener('click', () => {
-    // récupérer tous les entretiens dans le form
-    let data = new Array();
-    const ls_entretiens = document.querySelectorAll(".edit-reponses-item");
+document.addEventListener('click', (event) => {
+    const confirm_edit_entretien_button = event.target.closest('.edit-update-form-add-button.entretien');
 
-    ls_entretiens.forEach(entretien => {
-        const date = entretien.querySelector("input[type='date']").value;
-        const type = entretien.querySelector("input[type='text']").value;
-        const keep = !entretien.querySelector("span").classList.contains("todelete");
+    if (confirm_edit_entretien_button){
+        // récupérer tous les entretiens dans le form
+        let data = new Array();
+        const ls_entretiens = document.querySelectorAll(".edit-reponses-item");
 
-        if (date != "" && type != "" && keep){ // avoid trying to add empty stuff
-            console.log("couple")
-            console.log(date)
-            console.log(type)
-            const couple = new Array(date, type);
-            data.push(couple);
-        }
-    })
+        ls_entretiens.forEach(entretien => {
+            const date = entretien.querySelector("input[type='date']").value;
+            const type = entretien.querySelector("input[type='text']").value;
+            const keep = !entretien.querySelector("span").classList.contains("todelete");
 
-    data = JSON.stringify(data);
-    //console.log(data)
+            if (date != "" && type != "" && keep){ // avoid trying to add empty stuff
+                console.log("couple")
+                console.log(date)
+                console.log(type)
+                const couple = new Array(date, type);
+                data.push(couple);
+            }
+        })
 
-    // obtenir id
-    const box = document.querySelector(".pressed")
-    const id = box.getAttribute("data-candi-id");
+        data = JSON.stringify(data);
+        //console.log(data)
 
-    //envoyer l'info dans le backend pour traiter et rafraichir la page
-    fetch(`edit_entretiens/${id}`, {
-        method: "POST",
-        body: data,
-        headers: { "Content-Type": "application/json" }
-    }).then((() => {
-        window.location.reload(); 
-    }))
+        // obtenir id
+        const box = document.querySelector(".pressed")
+        const id = box.getAttribute("data-candi-id");
+
+        //envoyer l'info dans le backend pour traiter et rafraichir la page
+        fetch(`edit_entretiens/${id}`, {
+            method: "POST",
+            body: data,
+            headers: { "Content-Type": "application/json" }
+        }).then((() => {
+            window.location.reload(); 
+        }))
+    }
+})
+
+document.addEventListener('click', (event) => {
+    const confirm_edit_reponse_button = event.target.closest('.edit-update-form-add-button.reponse');
+
+    if (confirm_edit_reponse_button){
+        // récupérer tous les entretiens dans le form
+        let data = new Array();
+        const ls_entretiens = document.querySelectorAll(".edit-reponses-item");
+
+        ls_entretiens.forEach(entretien => {
+            const date = entretien.querySelector("input[type='date']").value;
+            const content = entretien.querySelector("input[type='text']").value;
+            const keep = !entretien.querySelector("span").classList.contains("todelete");
+
+            if (date != "" && content != "" && keep){ // avoid trying to add empty stuff
+                console.log("couple")
+                console.log(date)
+                console.log(content)
+                const couple = new Array(date, content);
+                data.push(couple);
+            }
+        })
+
+        data = JSON.stringify(data);
+        //console.log(data)
+
+        // obtenir id
+        const box = document.querySelector(".pressed")
+        const id = box.getAttribute("data-candi-id");
+
+        //envoyer l'info dans le backend pour traiter et rafraichir la page
+        fetch(`edit_reponses/${id}`, {
+            method: "POST",
+            body: data,
+            headers: { "Content-Type": "application/json" }
+        }).then((() => {
+            window.location.reload(); 
+        }))
+    }
 })

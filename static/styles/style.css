@@ -447,7 +447,7 @@ a:hover {
     font-weight: 400;
 }
 
-#crud-edit, #crud-delete, #crud-update {
+#crud-edit, #crud-delete {
     cursor: pointer;
 }
 
@@ -669,7 +669,7 @@ a:hover {
     cursor: pointer;
 }
 
-#add-error{
+#add-error, #edit-error{
     padding: 10px 40px;
     color: #E25A71;
     font-size: 16px;

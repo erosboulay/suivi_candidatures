@@ -124,6 +124,30 @@ def get_reponses(id_candidature):
         reponses = session.execute(stmt).all()
         return jsonify([{'contenu': row.contenu, 'date': row.date.strftime("%d/%m/%Y")} for row in reponses])
     
+@app.route('/edit_reponses/<int:id_candidature>', methods=['POST'])
+def edit_reponses(id_candidature):
+    # get all info
+    json_file = request.json
+    print(json_file)
+
+    # empty old info
+    with Session(engine) as session:
+        stmt = delete(Reponse).where(Reponse.c.id_candidature == id_candidature)
+        session.execute(stmt)
+
+        # add new info
+        for couple in json_file:
+            entretien_date = datetime.strptime(couple[0], "%Y-%m-%d").date()
+            entretien_contenu = couple[1]
+
+            stmt2 = insert(Reponse).values(id_candidature = id_candidature, date = entretien_date, contenu = entretien_contenu)
+            session.execute(stmt2)
+        
+        session.commit()
+
+    return jsonify({"message": "Candidature added successfully"}), 201
+
+
 @app.route('/add_candidature', methods=['POST'])
 def add_candidature():
     entreprise = request.form.get('Entreprise')
