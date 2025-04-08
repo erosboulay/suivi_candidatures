@@ -11,7 +11,7 @@ Une application web dévelopée avec Flask et SQLAlchemy permettant de gérer le
 1. Cloner le dépôt
 ```
 git clone https://github.com/erosboulay/suivi_candidatures.git
-cd suivi_app
+cd suivi_candidatures
 ```
 
 2. Créer un environnement virtuel
